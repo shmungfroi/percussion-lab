@@ -29,7 +29,7 @@ def seed(sessions=None, draft=None, skills=None, tempos=None):
     if tempos is not None: s["tempos"] = tempos
     return s
 
-CREDIT = "The 40 International Drum Rudiments are the standard list published by the Percussive Arts Society. Notation drawn for this app."
+CREDIT = "The 40 International Drum Rudiments are the standard list published by the Percussive Arts Society. Notation follows the PAS 40 International Drum Rudiments as shown on the Vic Firth Rudiments poster, redrawn for this app."
 results = []
 def check(name, ok, detail=""):
     results.append((name, bool(ok), detail)); print(("PASS " if ok else "FAIL ") + name + (f"  [{detail}]" if detail and not ok else ""))
@@ -349,9 +349,10 @@ def main():
         pg = page_with(seed(), ctx=ctx); pg.click("[data-nav=rudiment-ref]"); pg.click("[data-rud-open='1']"); one = pg.is_visible("#rudNotationMissing"); pg.click("#rudOverlay [data-rud-step='1']")
         check("P4 broken notation.js: notice, no error", one and pg.is_visible("#rudNotationMissing") and not errors, ";".join(errors))
         # P4: third-party poster gone from the app, the docs and the build
-        texts = {n: (ROOT / n).read_text(encoding="utf-8") for n in ("index.html", "README.md", "scripts/build_single_file.py")}
+        # N1: the credit names the reference chart the notation follows; nothing else from it (no image, no VIC_ names).
+        texts = {n: (ROOT / n).read_text(encoding="utf-8").replace("as shown on the Vic Firth Rudiments poster", "") for n in ("index.html", "README.md", "scripts/build_single_file.py")}
         hits = [f"{n}: {m.group(0)}" for n, s in texts.items() for m in re.finditer(r"(?i)vic[ _-]?firth|VIC_|poster|\.jpe?g", s)]
-        check("P4 no Vic Firth / poster mention in index.html, README or build script", not hits, str(hits[:5]))
+        check("P4 no Vic Firth / poster mention in index.html, README or build script beyond the notation credit", not hits, str(hits[:5]))
         check("P4 poster image file removed", not list(ROOT.glob("assets/*")) and not list(ROOT.glob("**/*.jpg")))
         if (ROOT / "notation.js").exists():
             out = subprocess.run([sys.executable, str(ROOT / "scripts" / "build_single_file.py")], capture_output=True, text=True)

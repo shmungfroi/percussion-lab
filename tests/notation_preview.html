@@ -86,7 +86,7 @@
     if (!window.Rudiments) { grid.textContent = 'notation.js did not load.'; return; }
     var only = q.get('only');
     grid.innerHTML = Rudiments.list.filter(function (r) { return !only || String(r.n) === only; }).map(function (r) {
-      return '<section class="card" id="r' + r.n + '"><h2>' + r.n + '. ' + r.name + ' <span>' + r.group + ' · ' + r.metre + '</span></h2>' +
+      return '<section class="card" id="r' + r.n + '"><h2>' + r.n + '. ' + r.name + ' <span>' + r.group + '</span></h2>' +
         Rudiments.svg(r.n) + '<code>' + Rudiments.describe(r.n) + '</code></section>';
     }).join('');
     document.getElementById('credit').textContent = Rudiments.credit;

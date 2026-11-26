@@ -580,7 +580,7 @@ const RUDIMENTS=[
   'Single Stroke Seven',
   'Multiple Bounce Roll',
   'Triple Stroke Roll',
-  'Double Stroke Open Roll',
+  'Double Stroke Roll',
   'Five Stroke Roll',
   'Six Stroke Roll',
   'Seven Stroke Roll',
@@ -593,14 +593,14 @@ const RUDIMENTS=[
   'Single Paradiddle',
   'Double Paradiddle',
   'Triple Paradiddle',
-  'Paradiddle-Diddle',
+  'Paradiddle–Diddle',
   'Flam',
   'Flam Accent',
   'Flam Tap',
   'Flamacue',
   'Flam Paradiddle',
   'Single Flammed Mill',
-  'Flam Paradiddle-Diddle',
+  'Flam Paradiddle–Diddle',
   'Pataflafla',
   'Swiss Army Triplet',
   'Inverted Flam Tap',
@@ -616,7 +616,7 @@ const RUDIMENTS=[
   'Double Ratamacue',
   'Triple Ratamacue'
 ];
-const RUD_CREDIT='The 40 International Drum Rudiments are the standard list published by the Percussive Arts Society. Notation drawn for this app.';
+const RUD_CREDIT='The 40 International Drum Rudiments are the standard list published by the Percussive Arts Society. Notation follows the PAS 40 International Drum Rudiments as shown on the Vic Firth Rudiments poster, redrawn for this app.';
 
 /* ---------- dates ---------- */
 function localDate(d=new Date()){const p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`}
@@ -734,17 +734,17 @@ function renderRudiments(){const panel=$('#panel-rudiment-ref');
  if(!panel.querySelector('#rudGrid')){panel.innerHTML=pageHead('Percussive Arts Society','Rudiment library','All 40 PAS International Drum Rudiments. Tap a name to see its notation and log a tempo. Tick Demonstrated once your teacher has seen it.')+
   `<div class="rudiment-summary" id="rudSummary"></div><div class="rudiment-tools"><label class="field" for="rudimentSearch"><span class="field-label">Find a rudiment</span><input id="rudimentSearch" type="search" placeholder="Search all 40…" autocomplete="off"></label><div class="rudiment-filters" role="group" aria-label="Filter rudiments"><button data-rud-filter="all" class="btn">All 40</button><button data-rud-filter="remaining" class="btn">To practise</button><button data-rud-filter="completed" class="btn">Demonstrated</button></div></div><div class="rudiment-grid" id="rudGrid"></div><p class="note rud-credit" id="rudCredit">${escape(RUD_CREDIT)}</p>`}
  updateRudiments()}
-function updateRudiments(){const progress=state.rudimentChecks||{};const done=RUDIMENTS.filter((n,i)=>progress[i+1]?.done).length;const q=($('#rudimentSearch')?.value||'').toLowerCase().trim();
+function updateRudiments(){const progress=state.rudimentChecks||{};const done=RUDIMENTS.filter((n,i)=>progress[i+1]?.done).length;const dash=t=>t.replace(/[\u2010-\u2015]/g,'-'),q=dash(($('#rudimentSearch')?.value||'').toLowerCase().trim());
  $('#rudSummary').innerHTML=`<div><div class="eyebrow">Technique reference · 01–40</div><strong>${done}<em> / 40</em></strong><span>Rudiments demonstrated</span></div>${bar(done,40,'Rudiments demonstrated')}<p class="small muted">This records practice, not a formal PAS certification or HSC mark. It is included in your JSON backup and evidence report.</p>`;
  document.querySelectorAll('[data-rud-filter]').forEach(b=>{const on=b.dataset.rudFilter===rudimentFilter;b.classList.toggle('primary',on);b.setAttribute('aria-pressed',on)});
- const items=RUDIMENTS.map((name,i)=>({name,number:i+1})).filter(it=>(rudimentFilter==='all'||(rudimentFilter==='completed'?progress[it.number]?.done:!progress[it.number]?.done))&&(it.name.toLowerCase().includes(q)||String(it.number)===q));
+ const items=RUDIMENTS.map((name,i)=>({name,number:i+1})).filter(it=>(rudimentFilter==='all'||(rudimentFilter==='completed'?progress[it.number]?.done:!progress[it.number]?.done))&&(dash(it.name.toLowerCase()).includes(q)||String(it.number)===q));
  $('#rudGrid').innerHTML=items.map(({name,number})=>{const r=progress[number]||{},best=bestTempo('rud:'+number);return `<div class="rudiment-item ${r.done?'rudiment-complete':''}"><button class="rud-open" data-rud-open="${number}" aria-label="Open notation: ${number}. ${escape(name)}"><span class="rudiment-no">${num(number)}</span><span class="rudiment-name"><strong>${escape(name)}</strong><span>${r.done?'Demonstrated '+escape(fmtDate(r.date||'')):'Not yet demonstrated'}${best?` · best ${best} bpm`:''}</span></span></button><label class="rudiment-check"><input type="checkbox" data-rud-check="${number}" ${r.done?'checked':''} aria-label="Demonstrated: ${escape(name)}"><span>Demonstrated</span></label></div>`}).join('')||'<div class="empty">No rudiments match this filter.</div>'}
 
 /* ---------- Overlays ---------- */
 function openOverlay(el){if(!lastFocus)lastFocus=document.activeElement;el.hidden=false;document.body.classList.add('locked')}
 function closeOverlays(){const was=!$('#rudOverlay').hidden;$('#rudOverlay').hidden=true;rudOpen=0;if($('#dialog').hidden)document.body.classList.remove('locked');if(was&&lastFocus&&document.contains(lastFocus))lastFocus.focus();lastFocus=null}
 /* P4: our own notation from notation.js. Anything missing or broken there becomes a plain notice, never an error. */
-function notationHTML(n){let svg='';try{const R=window.Rudiments;if(R&&typeof R.svg==='function')svg=R.svg(n,window.innerWidth<560?{maxWidth:340}:{})}catch(e){svg=''}
+function notationHTML(n){let svg='';try{const R=window.Rudiments;if(R&&typeof R.svg==='function')svg=R.svg(n,{maxWidth:window.innerWidth<560?340:Math.max(370,Math.min(720,window.innerWidth-200))})}catch(e){svg=''}
  return typeof svg==='string'&&svg.trim().startsWith('<svg')?`<div class="notation" id="rudNotation">${svg}</div>`:`<p class="notice" id="rudNotationMissing">The notation can't be shown because the file notation.js did not load. Keep notation.js next to this file, or use the one-file copy. You can still tick this rudiment and log a tempo.</p>`}
 function rudGroup(n){try{const x=window.Rudiments?.list?.find?.(r=>r.n===n);const g=x&&(x.group||x.family);return typeof g==='string'?g:''}catch(e){return ''}}
 function openRudiment(n,keepFocus){rudOpen=n;const el=$('#rudOverlay'),name=rudName(n),r=(state.rudimentChecks||{})[n]||{},group=rudGroup(n);
