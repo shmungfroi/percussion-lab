@@ -49,7 +49,7 @@
   var DATA = [
     ['Single Stroke Roll', 'single', '[t:R t:L t:R t:L t:R t:L t:R t:L] | [t:R t:L t:R t:L t:R t:L t:R t:L]'],
     ['Single Stroke Four', 'single', '[3( s:R,L s:L,R s:R,L ) e:L,R] | [3( s:R,L s:L,R s:R,L ) e:L,R]'],
-    ['Single Stroke Seven', 'single', '[6( t:R,L t:L,R t:R,L t:L,R t:R,L t:L,R )] q:R,L | [6( t:R,L t:L,R t:R,L t:L,R t:R,L t:L,R )] q:R,L'],
+    ['Single Stroke Seven', 'single', '[6( s:R,L s:L,R s:R,L s:L,R s:R,L s:L,R )] q:R,L | [6( s:R,L s:L,R s:R,L s:L,R s:R,L s:L,R )] q:R,L'],
     ['Multiple Bounce Roll', 'bounce', 'wz:R_L_R_L_R_L_R_L_etc.'],
     ['Triple Stroke Roll', 'bounce', '[3( s:R s:R s:R ) ! 3( s:L s:L s:L )] | [3( s:R s:R s:R ) ! 3( s:L s:L s:L )]'],
     ['Double Stroke Roll', 'dbl', 'w///:R_R_L_L_R_R_L_L_R_R_L_L_R_R_L_L_etc.'],
@@ -234,7 +234,8 @@
     while (i < notes.length) {
       if (!notes[i].rows[r]) { i++; continue; }
       var j = i;
-      while (j + 1 < notes.length && notes[j + 1].rows[r] && (notes[j].tie || notes[j + 1].join[r])) j++;
+      // a tie joins sticking only when the tied note carries a multi-letter roll string; single letters stay under their own notes
+      while (j + 1 < notes.length && notes[j + 1].rows[r] && ((notes[j].tie && chars(notes[j].rows[r]).length > 1) || notes[j + 1].join[r])) j++;
       var cs = [], owner = [];
       for (var k = i; k <= j; k++) chars(notes[k].rows[r]).forEach(function (c) { cs.push(c); owner.push(k); });
       var x0 = start(i), x1 = start(j) + textBox(notes[j].rows[r]).width;

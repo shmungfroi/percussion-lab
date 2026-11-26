@@ -69,7 +69,7 @@ EXPECT = {
     40: (12, 2, 0, 6, 0, 0, 2, 0, 0, 0, False),
 }
 FIELDS = ("notes", "accents", "flams", "drags", "rests", "ties", "tuplets", "slashes", "dots", "or", "row2")
-THIRTYSECONDS = {1, 3}                  # the only rudiments drawn with three beams
+THIRTYSECONDS = {1}  # #3 is sixteenth sextuplets (two beams) on the poster; corrected 27 Nov
 STUBS = {8: 4, 9: 1, 14: 2, 33: 2}      # partial (stub) beams; none elsewhere
 SPOT = {                                # exact sticking strings written under one note
     4: "R L R L R L R L etc.", 6: "R R L L R R L L R R L L R R L L etc.",
@@ -181,7 +181,7 @@ def main():
         check("five-line staff, opening thick-thin and closing thin-thick bar lines", not per["bars"], str(per["bars"]))
         check("notes, accents, graces, rests, ties, tuplets, slashes, dots, 'or' and second rows match the reference (wrapped and one line)",
               not per["counts"], "; ".join(per["counts"][:6]))
-        check("32nd-note (three) beams only on 1 and 3", not per["beams32"], str(per["beams32"]))
+        check("32nd-note (three) full beams only on 1", not per["beams32"], str(per["beams32"]))
         check("partial beams only where drawn (6 Stroke 4, 7 Stroke 1, 15 Stroke 2, Double Drag Tap 2)", not per["stubs"], str(per["stubs"]))
         check("multi-letter sticking under one note kept exactly (4, 6, 15, 31, 35)", not per["spot"], str(per["spot"]))
         check("default drawing stays within 370 units wide (wraps instead of squashing)", not per["wide"], str(per["wide"]))
