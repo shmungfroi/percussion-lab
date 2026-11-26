@@ -1,0 +1,94 @@
+# Correction register — Percussion Technique Lab
+
+Baseline: ChatGPT V2 ("3–3–2 TRACE / tonal lift"), first commit in this repo, untouched.
+
+| # | Severity | Finding | Fix | Status |
+|---|---|---|---|---|
+| C1 | Critical | ChatGPT wrote literal `\n` characters (7 of them) into the CSS. Browsers read them as the letter "n", so these selectors matched nothing: `n n :root`, `n body`, `n h1, h2, h3…`, `n :root` (the whole V2 palette), plus the mobile rudiment layout and print rules. The page rendered light grey with near-invisible headings and labels. Present in V1 and V2. | Real line breaks. 0 dead rules after fix. | Fixed 25 Nov |
+| C2 | Design | With C1 fixed, the Shmung Studio monospace body font would have switched on for the first time. | Middle ground, approved by Justin: sans for sentences; monospace for pills, chips, eyebrows, nav counts, rudiment numbers, level buttons, stat footers, lesson numbers, sources, date/number inputs. | Fixed 25 Nov |
+| C3 | Structure | Vic Firth poster embedded as a 1.86 MB base64 string: 97% of the file, one unreadable line. | Moved to `assets/vic-firth-40-rudiments.jpg`. `scripts/build_single_file.py` rebuilds a one-file copy. Missing-image fallback message added. | Fixed 25 Nov |
+| C4 | Data | Progress lives only in the browser where it was entered. A new link means empty progress. | Process: OC exports JSON from the old copy, and it's imported into the new one. | Waiting on OC's JSON |
+| C5 | Minor | Import didn't validate `rudimentChecks`. | `validRudiments()`: keys 1–40, `done` boolean, optional `date` string. Older backups without it still import. | Fixed 25 Nov |
+| C6 | Readability | Strand labels on skill cards used colours designed for a light theme (e.g. `#0e7b72`), nearly invisible on dark cards. Found while testing C1. | Same hues, lighter: `#5fd3c4`, `#8fb2e8`, `#f0a47e`, `#b9a0dc`, `#e0c070`. | Fixed 25 Nov |
+| C7 | Regression | Independent check (Fable): print view went light-text-on-white once C1 switched the dark palette on, and C6's lighter strand colours made it worse. C2 had also wrongly made the free-text note box (`.skill-note`) monospace. | Print reset block: dark ink on white, light checkboxes, green labels. `.skill-note` back to sans. | Fixed 25 Nov |
+
+| C8 | High (phone) | At 390 px the page was 650 px wide and scrolled sideways: the sidebar watermark escaped because `.sidebar` lost `position:relative` under 760 px. Pre-existing. | `position:relative` on `.sidebar` in the mobile query. All 5 panels now exactly screen width at 390 and 360 px. | Fixed 25 Nov |
+| C9 | Medium | Remove / Delete buttons `#a44331` on dark grey, 1.68:1. Pre-existing. | `#ff9c88`, 5.07:1; hover 5.67:1. | Fixed 25 Nov |
+| C10 | Low | Placeholders used the browser default grey (2.2–2.4:1); footer 4.46:1 at 11 px. Pre-existing. | Placeholders `#b1b2ad` (4.67–7.24:1 across input fills); footer `#b3b5ae` (7.08:1). | Fixed 25 Nov |
+| C11 | Low | Goals panel: an unclosed wrapper put "Save, transfer and print" in the right-hand column. Plurals read "1 entries" / "1 teacher-verified skills". Pre-existing. | Goals and Journal are now the two columns; save/print section full width below. Singular forms for 1. | Fixed 25 Nov |
+
+Tested headless (Chrome, 1366×900, 390×844 and print) and independently reviewed: no JS errors; original saved progress loads with identical counts; session save persists after reload; poster loads from assets and in the one-file build; valid, legacy and malformed imports behave correctly.
+
+## 26 Nov 2026 pass: full audit register (C12–C29) and features F1, F2, F5, F6, F7
+
+Decisions (Justin, 25 Nov): D1 levels are Not started / Exploring / Consistent / Applied. D2 moving a level up keeps teacher sign-off, moving it down clears it with a notice. D3 honour system, no PIN. D4 build F1, F2, F5, F6, F7 (F3, F4, F8 not built).
+
+| # | Severity | Finding | Fix | Status |
+|---|---|---|---|---|
+| C12 | High | Session date never refreshed; old drafts logged on the wrong day. | On open, and when the page comes back into view, an empty draft moves to today. A draft with content shows "Unsaved draft from …: Keep draft / Clear it, start today". | Fixed |
+| C13 | High | Any level click wiped teacher verification. | D2: up keeps, down clears with a notice. | Fixed |
+| C14 | High | Two tabs overwrote each other. | Every change re-reads storage first (`mutate`); `storage` events refresh the other tab. | Fixed |
+| C15 | Medium | Skill note lost if the page closed before leaving the field. | Saves on every keystroke. | Fixed |
+| C16 | Medium | Journal in entry order. | Sorted by session date, newest first (Today and journal). | Fixed |
+| C17 | Medium | Focus jumped to the top after every tick. | `rerender()` restores focus, cursor, scroll and open/closed sections. | Fixed |
+| C18 | Medium | Poster rebuilt on every search keystroke and tick. | Rudiment page shell built once; only the list and summary update. | Fixed |
+| C19 | Medium | Print: journal collapsed, forms printed. | Entries expand for printing; forms, metronome, tempo inputs hidden. | Fixed |
+| C20 | Low | Unnamed progress bars; tooltip contradicted label; no reduced motion. | Bars named; tooltips explain the same level name; `prefers-reduced-motion` respected. | Fixed |
+| C21 | Low | "(0 min)". | "—"; new drafts prefilled 25 minutes. | Fixed |
+| C22 | Polish | Three level vocabularies, Mastered/Demonstrated, nav ≠ titles, OC/you. | One level set (D1); "Demonstrated"; nav labels are page titles; student addressed as "you". | Fixed |
+| C23 | Polish | Hero on every page; diamond repeated 3× as decoration. | Full hero on Today only; compact headers elsewhere; page-background diamond removed; the diamond is now a working warm-up tracker (cells fill as strands are ticked). Sidebar texture kept. | Fixed |
+| C24 | Polish | Phone nav half hidden; Skills page 12,871 px tall. | Fixed bottom tab bar of 5. Skill cards put target, evidence and tempo in a collapsible section on phone: Skills page now 10,079 px at 390 px. | Fixed |
+| C25 | Polish | Tap targets 19–39 px; 10–11 px text. | 44 px minimum for buttons, levels, rows; 12 px type floor (0 visible elements under 12 px at 360/390 px). | Fixed |
+| C26 | Polish | Poster unreadable on phone. | "View full screen" overlay (fit / actual size, pinch-zoom); inline poster hidden on phone. | Fixed |
+| C27 | Polish | Warm-up detached from the log; filler chips; toast over Save; no first run. | One "Today's session" card: step 1 warm-up, step 2 record. Filler chips removed. Toast at the top on phone. "Start here" shown until the first session. | Fixed |
+| C28 | Polish | No current-lesson marker; "complete"/"completed". | First unfinished lesson marked "Next up"; chips read "2/3 done" or "Complete". | Fixed |
+| C29 | Polish | ISO dates. | Shown as "25 Nov 2026" everywhere (stored as ISO). | Fixed |
+| F1 | Feature | Progress only shown as totals. | 8-week minutes strip, last practised, week streak; functional warm-up diamond. | Built |
+| F2 | Feature | No evidence report. | "Evidence report" page with date range: skills + sign-offs, pathway, rudiments, tempo log, goals, full journal. Prints cleanly / saves as PDF. | Built |
+| F5 | Feature | Notation only on the whole poster. | Tap a rudiment: its notation cropped from the poster, Demonstrated tick, tempo log, prev/next. | Built |
+| F6 | Feature | No tempo record. | Tempo log per skill and rudiment, best/last, sparkline, removable history. New optional data key `tempos` (old backups still load). | Built |
+| F7 | Feature | No metronome. | Web Audio metronome on Today: 30–240 bpm, subdivisions 1–7, Rhythm Diamond groupings (3+3+2 family in quavers, 5+5+6 and 7+7+2 families in semiquavers) with accented group starts. | Built |
+
+Data shape: unchanged apart from the optional `tempos` array. Import validates it. Regression suite: `python3 tests/run_tests.py`.
+
+### Independent check (Fable agent, 26 Nov 2026): 19 findings, all addressed
+
+| # | Sev | Finding | Fix |
+|---|---|---|---|
+| IC1 | High | Typing 100–199 bpm in the metronome became 240. | Typed tempo only applies when 30–240 and the box is never rewritten mid-typing. |
+| IC2 | Medium | 3+3+2 and 2+3+3 sounded the same once looping. | The bar's downbeat has its own, higher click and is marked in the grid. |
+| IC3 | Medium | Back-dating a draft showed the "old draft" banner, or reset the date. | A hand-picked date is respected; future dates refused. |
+| IC4 | Medium | Toasts hidden behind the rudiment/poster windows. | Toast layered above them. |
+| IC5 | Medium | Report's default range skipped tempos logged before the first session. | Range starts at the earliest session or tempo; resets after import. |
+| IC6 | Medium | Phone strip showed 6 weeks under "8 weeks". | All 8 weeks kept; alternate labels hidden on narrow phones. |
+| IC7 | Medium | Goal ticks, section toggles and the slider under 44 px. | All 44 px; suite now checks Goals and Rudiments at 44 px. |
+| IC8 | Medium | Print included the session form, empty note boxes, teacher box, orphan heading. | Hidden in print; filled notes print as text. |
+| IC9 | Low | Old empty drafts showed minutes blank with a "25" placeholder. | Blank minutes on an empty draft become 25; placeholder "e.g. 25". |
+| IC10 | Low | Half-typed goal or bpm wiped by any redraw. | Carried across redraws. |
+| IC11 | Low | Rudiment 29 crop showed a sliver of 28. | Crop moved down 7 px (checked). |
+| IC12 | Low | Focus dropped to the page after some actions; dialog had no focus loop. | Focus moved to a sensible next control; Tab stays inside open windows; closing the poster returns to the rudiment it came from. |
+| IC13 | Low (pre-existing) | Unreadable saved data was silently replaced. | Copied to a backup key with a notice before anything is saved. |
+| IC14 | Low | A damaged draft blanked the app. | Draft fields cleaned on load; import checks them; tempos validated on load too. |
+| IC15 | Low | Tempo history closed after each log/delete in the rudiment window. | Open state restored after the window is rebuilt. |
+| IC16 | Low | Metronome kept playing on other pages with no Stop. | Floating "Metronome on · Stop" control. |
+| IC17 | Low | Leftover diamond watermarks; "Completed " with no date; streak capped at 8 weeks; save toast claimed success on a failed write; wording. | Watermark SVGs removed (file 117 → 111 KB); dates only shown when known; streak counts all weeks; honest failure toast; "8-lesson pathway"; phone tab "Goals". |
+| IC18 | Check | The rebuild had added an unsupported claim that the poster was "reproduced with permission … for this student's private use". | My error. Removed; now reads "copyright Vic Firth / PAS; keep this copy private". |
+| IC19 | Note | dist one-file copy stale. | Rebuilt before handover. |
+
+Regression suite after fixes: 55/55 passed (headless Chrome, 1366 px, 390 px, 360 px, print media).
+
+## 26 Nov 2026 pass: percussion register P1–P5 (spec: `tests/reports/spec-p06/SPEC.md`)
+
+Aim: the app runs at full capacity wherever it is opened (a claude.ai artifact link, GitHub Pages, a local file), holds no third-party copyright, and names no student.
+
+| # | Severity | Finding | Fix | Status |
+|---|---|---|---|---|
+| P1 | Must | Delete goal, delete journal entry, delete tempo, Import and "Clear it, start today" used the browser's `confirm()`. Sandboxed viewers block it, so those buttons silently did nothing. | One in-page dialog (`dialog()` / `ask()`, returns a Promise): labelled `alertdialog`, focus moves in and returns to the button that opened it, Tab stays inside, Escape or a tap outside cancels, sits above the rudiment window. All five `confirm()` calls replaced; no `alert`/`confirm`/`prompt` anywhere. The suite overrides all three to throw and checks Cancel and confirm for each. | Fixed 26 Nov |
+| P2 | Must | Export used an `<a download>` link, which sandboxed viewers block; Import only took a file. | Export asks the host for its downloads helper (`window.claude?.use?.("downloads")`, then `save({filename, data})`; no other `window.claude` member is read; rejection and a 4-second no-answer are handled), otherwise uses the download link, then says what happened. **Copy backup** is always offered (export dialog and Goals page): clipboard from the click, or a read-only box with the JSON selected if the browser refuses. **Import backup** opens a dialog with "Choose a backup file" and a paste box; both go through the same validation and the P1 confirm. | Fixed 26 Nov |
+| P3 | Must | Print / save as PDF used `window.print()`, which sandboxed viewers block. | Top-level pages still print. A framed copy (`window.self !== window.top`) shows a notice instead: "Printing works from the website copy", the `PAGES_URL` link (empty constant until the public site exists; a placeholder line shows until then), a reminder that progress must be carried across by backup, and **Copy report as text**. The report page also has Copy report as text at all times; the text version is built from the same data as the on-screen report (`reportData()`). | Fixed 26 Nov; `PAGES_URL` to be set in P6 |
+| P4 | Must | The rudiment page showed a third-party publisher's poster (a 1.4 MB image) and cropped it for each rudiment's notation. Third-party copyright; it blocked a public repo and a student site. | `index.html` side: poster image deleted from the repo (`assets/` is gone), poster panel, full-screen poster window, crop maths and poster constants removed, every mention of the publisher removed from the app, README and build script. The rudiment window now shows `Rudiments.svg(n)` from `notation.js` (loaded by its own script tag) as inline SVG on a paper panel; a missing or broken `notation.js` gives a short notice and the tick and tempo log still work. Credit line added to the page and the rudiment window: "The 40 International Drum Rudiments are the standard list published by the Percussive Arts Society. Notation drawn for this app." `scripts/build_single_file.py` now builds `dist/Percussion_Technique_Lab.html` with `notation.js` inlined. Internal names `VIC_*` / `data-vic-*` renamed to `RUDIMENTS` / `data-rud-*`; saved-data key `rudimentChecks` unchanged. The notation drawings themselves are `notation.js` (separate builder). Note: the old poster is still in this repo's git history, which is why P6 starts a new public repo with clean history. | Fixed 26 Nov |
+| P5 | Should | The student's initials were hard-coded in the page title, sidebar, Today heading, report title, backup file name and an import message. | New **Student code** setting on Goals & journal (under the backup buttons), stored as the optional `studentCode` string (default `''`, 12 characters at most, validated on import). With a code: page title, sidebar line, Today heading, report title (screen and text copy) and backup file name show it. Without one the text is neutral ("Percussion Technique Lab", "Percussion technique evidence", `Percussion_Progress_<date>.json`). Old data and old backups load unchanged. The storage keys keep their original names so existing progress still loads. | Fixed 26 Nov |
+
+Data shape: unchanged apart from the optional `studentCode` string. Regression suite after P1–P5: 126/126 passed with the real `notation.js` (headless Chrome: 1366 px, 390 px, 360 px, print media, and inside a cross-origin sandboxed iframe); 125/125 with `--stub` (the stub run skips the name-match check).
+
+Still open: P6 (new public repo with clean history, GitHub Pages, then set `PAGES_URL`). Not yet tried inside the real claude.ai artifact viewer; the suite stands in for it with a sandboxed iframe and a mock of the host's downloads helper.

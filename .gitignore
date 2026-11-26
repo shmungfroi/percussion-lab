@@ -1,0 +1,5 @@
+# Student progress exports never go in the repo
+*.json
+dist/
+.DS_Store
+tests/out/

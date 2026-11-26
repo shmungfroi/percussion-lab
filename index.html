@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#28282d">
+  <meta name="description" content="Music Extension percussion technique and progress tracker. Works offline; teacher and student workflow.">
+  <title>Percussion Technique Lab</title>
+  <style>
+    :root{--ink:#16324b;--ink2:#304c60;--muted:#687b86;--bg:#f6f7f5;--card:#fff;--line:#dfe6e6;--teal:#08796e;--teal-lite:#e3f2ef;--gold:#a76d21;--gold-lite:#fbf0dc;--orange:#cc735c;--rose:#fff1ed;--shadow:0 7px 24px rgba(22,50,75,.055);--radius:17px;--focus:#c47d20}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #e2ac53;outline-offset:2px}a{color:var(--teal)}h1,h2,h3,p{margin-top:0}h1{font-size:clamp(27px,3vw,43px);line-height:1.08;letter-spacing:-.045em;margin-bottom:8px}h2{font-size:23px;letter-spacing:-.025em;line-height:1.25;margin:0}h3{font-size:17px;line-height:1.3;margin:0}p{margin-bottom:12px}small,.small{font-size:12px}.muted{color:var(--muted)}.serif{font-family:Georgia,"Times New Roman",serif}.eyebrow{font-size:11px;letter-spacing:.15em;text-transform:uppercase;font-weight:800;color:var(--teal)}.mono{font-variant-numeric:tabular-nums}
+    .app{display:grid;grid-template-columns:247px minmax(0,1fr);min-height:100vh;max-width:1700px;margin:auto}.sidebar{background:var(--ink);padding:28px 19px;color:#fff;display:flex;flex-direction:column;gap:26px;position:sticky;top:0;max-height:100vh;align-self:start;min-height:100vh}.brand{padding:10px 11px}.brand-kicker{font-size:10px;letter-spacing:.22em;color:#a9cdc9;text-transform:uppercase;font-weight:800}.brand-title{font-size:25px;line-height:1.1;letter-spacing:-.035em;font-weight:760;margin-top:10px}.brand-title span{font-family:Georgia,serif;font-style:italic;font-weight:400;color:#e3bc77}.brand-meta{font-size:12px;color:#b5c9d1;margin-top:9px}.side-rule{height:1px;background:#496071;margin:0 10px}.nav{display:grid;gap:5px}.nav button{background:transparent;color:#c8d9df;border:1px solid transparent;text-align:left;width:100%;padding:11px 12px;border-radius:10px;display:flex;align-items:center;gap:11px;font-weight:600}.nav button:hover{background:#284459;color:#fff}.nav button.active{background:#eaf6f2;color:#114c49}.nav-dot{border:2px solid currentColor;width:16px;height:16px;border-radius:5px;opacity:.75}.nav button.active .nav-dot{background:var(--teal);border-color:var(--teal);box-shadow:inset 0 0 0 4px #eaf6f2}.side-bottom{margin-top:auto;padding:0 11px;color:#b5c9d1;font-size:12px}.side-bottom strong{color:#fff}.page{min-width:0;padding:26px clamp(18px,3.8vw,55px) 65px}.topline{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:30px}.topline .ident{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.pill{display:inline-flex;align-items:center;gap:5px;background:#e9eeed;color:#485c69;border:1px solid #dce4e3;padding:5px 10px;border-radius:50px;font-size:11px;font-weight:800;letter-spacing:.03em}.pill.success{background:var(--teal-lite);color:#13665f;border-color:#c5e5de}.actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.btn{background:#fff;border:1px solid var(--line);border-radius:9px;color:var(--ink);padding:9px 13px;font-weight:700;font-size:13px;transition:background .16s,border-color .16s;white-space:nowrap}.btn:hover{border-color:#9ab4b3;background:#f6fbfa}.btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}.btn.primary:hover{background:#2b4a61}.btn.teal{background:var(--teal);color:#fff;border-color:var(--teal)}.btn.teal:hover{background:#09645b}.btn.quiet{background:transparent}.btn.danger{color:#a44331}.btn.small{padding:6px 10px;font-size:12px}.icon-btn{width:34px;height:34px;padding:0;text-align:center}.hero{border-radius:22px;overflow:hidden;background:var(--ink);color:#fff;padding:31px 34px;display:grid;grid-template-columns:minmax(0,1fr) 155px;gap:10px;position:relative;margin-bottom:22px}.hero .eyebrow{color:#9ee0ce}.hero p{color:#cbdfe5;max-width:560px;margin:12px 0 0}.diamond-mark{width:118px;height:118px;transform:rotate(45deg);border:2px solid #779ea2;border-radius:16px;align-self:center;justify-self:center;position:relative;opacity:.72}.diamond-mark:before,.diamond-mark:after{content:"";position:absolute;border:2px solid #779ea2;inset:17px;border-radius:9px}.diamond-mark:after{inset:35px;border-color:#e0ba78}.subhead{margin:0 0 18px;color:var(--muted);max-width:700px}.section-title{display:flex;align-items:end;justify-content:space-between;gap:15px;margin:24px 0 15px}.section-title .muted{margin-top:4px}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:19px}.stat-n{font-size:34px;line-height:1.15;font-weight:780;letter-spacing:-.04em;font-variant-numeric:tabular-nums;margin:8px 0}.stat-label{font-size:12px;color:var(--muted);font-weight:700}.stat-foot{font-size:12px;color:var(--teal);margin-top:6px}.progress{height:8px;background:#e7ecec;border-radius:25px;overflow:hidden}.progress .bar{height:100%;background:var(--teal);border-radius:25px;transition:width .2s}.stack{display:grid;gap:15px}.columns{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(290px,.75fr);gap:16px}.section-card-header{display:flex;align-items:start;justify-content:space-between;gap:14px;margin-bottom:15px}.minor{font-size:12px;font-weight:700;color:var(--muted)}.warmup-list{display:grid;gap:8px}.check-row{display:flex;align-items:center;gap:11px;border:1px solid var(--line);padding:12px 13px;border-radius:11px;background:#fff;cursor:pointer}.check-row:hover{background:#f9fcfb}.check-row input{accent-color:var(--teal);width:17px;height:17px;margin:0;flex-shrink:0;cursor:pointer}.check-row span{flex:1}.check-row.done{background:#f0f8f5;border-color:#d2e9e0}.check-row.done span{color:#3f665f}.session-fields{display:grid;grid-template-columns:1fr 140px;gap:10px}.field{display:flex;flex-direction:column;gap:5px}.field label,.field-label{font-size:12px;font-weight:800;color:var(--ink2)}.field input,.field textarea,.field select{border:1px solid #d3dfdf;background:#fff;border-radius:9px;padding:10px 11px;color:var(--ink);min-width:0;width:100%}.field textarea{min-height:72px;resize:vertical}.span-all{grid-column:1/-1}.tip{border-left:3px solid var(--gold);background:var(--gold-lite);padding:13px 15px;border-radius:0 9px 9px 0;font-size:13px;color:#59461e}.inline-between{display:flex;align-items:center;justify-content:space-between;gap:10px}.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.chip{display:inline-flex;border:1px solid #d4e6e1;border-radius:99px;background:#f2f9f7;padding:3px 9px;font-size:11px;color:#226b62;font-weight:750}.chip.gold{border-color:#eadbbf;background:#fff8e9;color:#865d24}.chip.gray{border-color:#dae2e3;background:#f5f7f7;color:#61727b}.mini-list{display:grid;gap:10px}.mini-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:10px;border-bottom:1px solid var(--line)}.mini-item:last-child{border:0;padding-bottom:0}.mini-item strong{font-size:14px}.note{color:var(--muted);font-size:12px}.tabs{display:flex;gap:7px;flex-wrap:wrap}.tab{background:white;border:1px solid var(--line);padding:7px 11px;border-radius:9px;color:var(--ink2);font-size:12px;font-weight:700}.tab.active{background:var(--ink);color:white;border-color:var(--ink)}.skills-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.skill-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:17px;display:flex;flex-direction:column;gap:10px}.skill-card.verified{border-color:#b6dcd2;background:#fcfffe}.skill-card h3{margin:0}.skill-source{font-size:11px;color:var(--muted);font-weight:700}.skill-card p{font-size:13px;color:var(--ink2);margin:0;line-height:1.48}.skill-card .target{font-size:12px;color:#6a5a40;background:#f8f3e9;border-radius:7px;padding:8px 10px}.levels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}.levels button{font-size:11px;padding:8px 3px;border-radius:7px;background:#f5f7f7;color:#647984;border:1px solid #e1e7e6;font-weight:750}.levels button:hover{border-color:#93c6bc}.levels button.selected{background:var(--teal);color:#fff;border-color:var(--teal)}.verified-row{display:flex;align-items:center;justify-content:space-between;gap:7px;border-top:1px solid var(--line);padding-top:11px}.verified-row label{display:flex;align-items:center;gap:7px;color:var(--ink2);font-size:12px;font-weight:700;cursor:pointer}.verified-row input{accent-color:var(--teal)}.skill-note{border:1px solid #d5dfe0;border-radius:8px;width:100%;padding:8px;font-size:12px;background:#fff}.strand-summary{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:16px 0 23px}.strand-tile{background:#fff;border:1px solid var(--line);border-radius:11px;padding:12px;display:flex;flex-direction:column;gap:7px}.strand-tile strong{font-size:12px;line-height:1.25}.strand-tile .small{color:var(--muted)}.pathway{display:grid;gap:12px}.lesson{background:#fff;border:1px solid var(--line);border-radius:15px;padding:20px}.lesson.done{border-color:#b8ded2}.lesson-head{display:flex;gap:15px;align-items:start;margin-bottom:13px}.lesson-number{width:45px;height:45px;border-radius:12px;background:#e8f4f1;color:#0a7269;display:grid;place-items:center;font-weight:800;font-size:20px;flex-shrink:0}.lesson-desc{color:var(--muted);font-size:13px;margin:6px 0 0}.lesson-tasks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.lesson-tasks label{font-size:13px;display:flex;gap:8px;align-items:flex-start;background:#f8faf9;border:1px solid #e8eded;border-radius:9px;padding:11px;cursor:pointer}.lesson-tasks input{accent-color:var(--teal);margin-top:3px}.lesson-end{border-top:1px solid var(--line);padding-top:10px;margin-top:13px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.goal-list{display:grid;gap:10px}.goal{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:start;gap:12px;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:#fff}.goal input[type=checkbox]{width:19px;height:19px;accent-color:var(--teal);margin-top:3px}.goal.complete{background:#f6fcfa}.goal.complete .goal-title{text-decoration:line-through;color:#6e8580}.goal-title{font-weight:700}.goal-sub{font-size:12px;color:var(--muted);margin-top:3px}.history-item{border:1px solid var(--line);padding:15px;border-radius:12px;background:#fff}.history-item details summary{cursor:pointer;font-weight:700}.history-item .details{border-top:1px solid var(--line);padding-top:11px;margin-top:10px;font-size:13px;color:var(--ink2)}.history-item .details p{margin-bottom:6px}.toolbox{border:1px solid #d7e1df;background:#edf4f2;border-radius:15px;padding:20px}.notice{background:#fff9e7;border:1px solid #f0ddb1;padding:12px 14px;border-radius:10px;color:#74541e;font-size:12px}.empty{padding:24px;background:#fff;border:1px dashed #cedbdb;border-radius:13px;color:var(--muted);font-size:13px;text-align:center}.toast{position:fixed;bottom:24px;right:24px;background:var(--ink);color:white;padding:12px 17px;border-radius:10px;box-shadow:0 12px 35px rgba(0,0,0,.22);z-index:10;max-width:360px;display:none}.toast.visible{display:block}.foot{margin-top:38px;border-top:1px solid var(--line);padding-top:14px;font-size:11px;color:var(--muted)}.hide{display:none!important}
+    @media(max-width:1050px){.app{grid-template-columns:200px 1fr}.sidebar{padding:22px 12px}.page{padding:20px 22px 50px}.columns{grid-template-columns:1fr}.strand-summary{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:760px){.app{display:block}.sidebar{position:static;min-height:auto;max-height:none;padding:13px 14px;gap:10px}.brand{padding:0 3px}.brand-title{font-size:20px;margin-top:2px}.brand-meta,.side-rule,.side-bottom{display:none}.nav{display:flex;overflow-x:auto;gap:5px;padding:2px 0}.nav button{white-space:nowrap;padding:9px 12px;font-size:12px}.nav-dot{display:none}.page{padding:16px 14px 40px}.topline{align-items:start;gap:10px;margin-bottom:15px}.topline .ident{gap:5px}.actions{justify-content:flex-end}.hero{padding:25px 22px;grid-template-columns:1fr}.diamond-mark{display:none}.cards{grid-template-columns:repeat(3,1fr);gap:7px}.card{padding:13px}.stat-n{font-size:27px}.skills-grid{grid-template-columns:1fr}.strand-summary{grid-template-columns:repeat(2,1fr)}.lesson-tasks{grid-template-columns:1fr}.session-fields{grid-template-columns:1fr}.section-title{align-items:start;flex-direction:column}.topline .ident .pill:first-child{display:none}}
+    @media print{body{background:#fff}.app{display:block}.sidebar,.actions,.tabs,.btn,.topline,#notification,.field input[type=file]{display:none!important}.page{padding:0}.hero{color:#111;background:#fff;border:1px solid #bbb}.hero p{color:#333}.card,.lesson,.skill-card,.goal{break-inside:avoid;box-shadow:none}.skills-grid{grid-template-columns:repeat(2,1fr)}.toast{display:none}}
+
+    /* SHMUNG STUDIO: compact dark instrument-panel styling, grounded in the Shmung Machine app manifest (#111113 / #18181b). */
+    :root{--ink:#ecece7;--ink2:#c2c4c1;--muted:#92938f;--bg:#111113;--card:#1b1b20;--line:#39393f;--teal:#b3ef66;--teal-lite:#252f1d;--gold:#ffbc74;--gold-lite:#29241e;--orange:#ff9474;--rose:#2b2324;--shadow:none;--radius:8px;--focus:#d4fa7f}
+    body{background:#111113;color:var(--ink);font:14px/1.5 ui-monospace,"SFMono-Regular",Consolas,"Liberation Mono",monospace;background-image:linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px);background-size:100% 34px}
+    h1,h2,h3,.stat-n,.brand-title,.goal-title{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:-.035em}.serif{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:750}.eyebrow,.brand-kicker,.minor{color:#b3ef66;font-size:10px;letter-spacing:.13em}.sidebar{background:#18181b;border-right:1px solid #35353a}.brand{border-bottom:1px solid #343439;padding-bottom:25px}.brand-title{font-size:26px;font-weight:900;line-height:1.02;text-transform:uppercase;letter-spacing:-.04em}.brand-title span{font-family:inherit;font-style:normal;color:#b3ef66}.brand-meta,.side-bottom{color:#a4a5a2}.side-bottom strong{color:#b3ef66}.side-rule{background:#35353a}.nav button{color:#b7b8b4;border-radius:5px;font-size:12px;letter-spacing:.005em}.nav button:hover{background:#2d2d31}.nav button.active{background:#30352a;border:1px solid #7eac55;color:#dfffaa}.nav-dot{border-radius:2px;width:9px;height:9px;border-width:1px}.nav button.active .nav-dot{background:#b3ef66;box-shadow:none;border-color:#b3ef66}.nav-count{margin-left:auto;font-size:10px;background:#303035;padding:1px 6px;border:1px solid #55555c}.page{padding-top:30px}.topline{border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:24px}.pill,.pill.success{background:#252629;color:#bfc0bc;border:1px solid #45454b;border-radius:4px;font-size:10px}.pill.success{color:#b3ef66;border-color:#57743f}.hero{background:#19191d;border:1px solid #444449;border-left:4px solid #b3ef66;border-radius:6px;padding:30px 34px}.hero .eyebrow{color:#b3ef66}.hero h1{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:850;letter-spacing:-.04em}.hero p{color:#aeb0ad}.diamond-mark{border-color:#646d58;border-radius:0}.diamond-mark:before,.diamond-mark:after{border-color:#b3ef66;border-radius:0}.card,.skill-card,.lesson,.strand-tile,.goal,.history-item,.toolbox,.empty{background:#1c1c20;border:1px solid #393940;border-radius:7px;box-shadow:none}.card{padding:20px}.card:before{content:"";display:block;height:2px;background:linear-gradient(90deg,#b3ef66 0%,#b3ef66 24%,#33343a 24%,#33343a 100%);margin-bottom:14px}.stat-n{color:#eafacb;font-weight:800}.stat-foot,.chip,.chip.gold{color:#b3ef66}.progress{background:#303135;border-radius:3px;height:5px}.progress .bar{background:#b3ef66;border-radius:3px}.btn,.tab{background:#28282d;border:1px solid #4c4c50;border-radius:5px;color:#e3e5df}.btn:hover,.tab:hover{background:#36363b;border-color:#92968a}.btn.primary,.btn.teal,.tab.active{background:#b3ef66;color:#121611;border-color:#b3ef66}.btn.primary:hover,.btn.teal:hover{background:#d7ffa2}.check-row,.lesson-tasks label,.history-item,.goal,.field input,.field textarea,.field select,.skill-note,.levels button{background:#242429;color:#e1e1dc;border:1px solid #424249;border-radius:5px}.check-row:hover{background:#303034}.check-row.done,.goal.complete,.skill-card.verified,.lesson.done{background:#222a20;border-color:#678d46}.check-row.done span,.goal.complete .goal-title{color:#d3e9bc}.field label,.field-label,.goal-title{color:#e2e4dc}.field input:focus,.field textarea:focus{background:#303034}.skill-card p{color:#c5c5c0}.skill-card .target,.tip,.notice{background:#292820;color:#e5d1aa;border:1px solid #584f34;border-radius:4px}.chip,.chip.gold,.chip.gray{background:#26292a;border:1px solid #4b5940;border-radius:3px;color:#b3ef66}.chip.gray{border-color:#48484d;color:#b6b8b5}.levels button{color:#c0c2bd}.levels button.selected{background:#b3ef66;color:#1b1e15;border-color:#b3ef66}.lesson-number{background:#353a2e;color:#d7ffab;border-radius:4px}.strand-tile strong,.section-title h2{color:#eceee9}.toolbox{background:#202125}.toast{background:#cafa87;color:#131613;border:1px solid #e3ffb8;border-radius:4px}.foot{color:#8b8f88}.note,.muted{color:#aaa9a5}.rudiment-summary,.rudiment-tools{background:#1c1c20;border:1px solid #424249;border-radius:6px;padding:22px;margin:0 0 17px}.rudiment-summary strong{display:block;font:850 54px/1 system-ui,sans-serif;color:#b3ef66;margin:13px 0 3px;letter-spacing:-.06em}.rudiment-summary strong em{font-size:22px;color:#8b8e88;font-style:normal}.rudiment-summary span{font-size:11px;text-transform:uppercase;color:#c5c7be;letter-spacing:.11em}.rudiment-summary .progress{margin:16px 0}.rudiment-summary p{margin:5px 0 0}.rudiment-tools{display:flex;gap:15px;align-items:end;justify-content:space-between;flex-wrap:wrap}.rudiment-tools .field{flex:1;max-width:400px;min-width:220px}.rudiment-tools input{padding:12px;background:#242429;color:#fff;border:1px solid #4a4a51;border-radius:4px;width:100%}.rudiment-filters{display:flex;gap:6px;flex-wrap:wrap}.rudiment-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-bottom:26px}.rudiment-item{display:flex;align-items:center;gap:13px;padding:11px 13px;background:#1c1c20;border:1px solid #3c3c43;border-radius:4px;min-width:0}.rudiment-item.rudiment-complete{border-color:#698d50;background:#232a20}.rudiment-no{font-size:12px;color:#b3ef66;border-right:1px solid #48484d;padding-right:12px;min-width:30px}.rudiment-name{flex:1;min-width:0}.rudiment-name strong{display:block;font-size:12px;color:#eceeea}.rudiment-name span{font-size:10px;color:#969891}.rudiment-check{font-size:10px;color:#bcbeb6;display:flex;align-items:center;gap:5px;white-space:nowrap}.rudiment-check input{accent-color:#b3ef66}.field input,.field textarea,.field select{color-scheme:dark}input[type=date],input[type=checkbox]{color-scheme:dark}a{color:#b3ef66}
+    @media(max-width:820px){.rudiment-grid{grid-template-columns:1fr}.rudiment-tools{display:block}.rudiment-tools .field{max-width:none;margin-bottom:12px}}
+    @media print{body{background:#fff;color:#111}.hero{background:#fff;color:#111}.rudiment-item{break-inside:avoid}.rudiment-summary strong{color:#111}}
+
+
+    /* V2: 3–3–2 TRACE / tonal lift — existing tracker logic and saved data untouched. */
+    :root {
+      --bg:#28282d; --card:#35353b; --line:#505058;
+      --teal-lite:#343d2e; --gold-lite:#3a342d;
+      --rose:#3a3032; --shadow:none;
+      --ink:#f4f3ef; --ink2:#d8d9d4; --muted:#babcb6;
+    }
+    html {background:#28282d}
+    body {background-color:var(--bg);background-image:none;color:var(--ink)}
+    .sidebar {background:#2c2c31;border-right:1px solid #58585e;overflow:hidden}
+    .sidebar > * {position:relative;z-index:1}
+    .side-rule,.brand {border-color:#505057}
+    .nav button:hover {background:#414147}
+    .nav button.active {background:#3e4739;border-color:#84b155}
+    .nav-count {background:#47474e;border-color:#676771}
+    .page {position:relative;isolation:isolate}
+    .topline {border-color:#56565e}
+    .hero {background:#34343a;border-color:#65656b;border-left-color:#b3ef66;grid-template-columns:minmax(0,1fr) 178px}
+    .hero p {color:#d0d1cb}
+    .diamond-mark::before,.diamond-mark::after {display:none}
+    .card,.skill-card,.lesson,.strand-tile,.goal,.history-item,.toolbox,.empty {background:var(--card);border-color:#55555d}
+    .card::before {background:linear-gradient(90deg,#b3ef66 0%,#b3ef66 24%,#5a5b62 24%,#5a5b62 100%)}
+    .btn,.tab {background:#404047;border-color:#64646d;color:#f2f3ef}
+    .btn:hover,.tab:hover {background:#4d4d55;border-color:#a0a79a}
+    .pill,.pill.success,.chip,.chip.gold,.chip.gray {background:#414149;border-color:#5e5e65}
+    .pill.success {background:#36422f;border-color:#628a41}
+    .progress {background:#505057}
+    .check-row,.lesson-tasks label,.history-item,.goal,.field input,.field textarea,.field select,.skill-note,.levels button {background:#3c3c43;border-color:#666670;color:#f1f1ed}
+    .check-row:hover,.field input:focus,.field textarea:focus {background:#494950}
+    .check-row.done,.goal.complete,.skill-card.verified,.lesson.done {background:#354232;border-color:#729950}
+    .skill-card p {color:#dbdcd5}
+    .skill-card .target,.tip,.notice {background:#443b2d;border-color:#746344;color:#f5dab0}
+    .toolbox {background:#37373e}
+    .rudiment-summary,.rudiment-tools,.rudiment-item {background:#35353b;border-color:#595961}
+    .rudiment-item.rudiment-complete {background:#354333;border-color:#799b52}
+    .rudiment-tools input {background:#424249;border-color:#696970}
+    .rudiment-name span,.note,.muted {color:#bfc0bc}
+    @media(max-width:820px) {.hero {grid-template-columns:minmax(0,1fr) 105px}.diamond-mark {width:105px;height:105px}.page::before {background-size:470px 470px;opacity:.11}}
+    @media(max-width:560px) {.hero {grid-template-columns:1fr;padding:22px 20px}.diamond-mark {display:none}}
+    @media print {body {background:#fff;color:#111}.page::before,.sidebar::before {display:none}.hero {background:#fff;color:#111}.hero p {color:#333}.card,.skill-card,.lesson,.strand-tile,.goal,.history-item {background:#fff;color:#111;border-color:#bbb}}
+
+    /* C2 (25 Nov 2026): middle-ground type. Sentences in a readable sans; monospace only for numbers, counts and small labels. */
+    body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:15px}
+    .eyebrow,.brand-kicker,.minor,.pill,.chip,.nav-count,.rudiment-no,.levels button,.stat-foot,.lesson-number,.skill-source,.mono,
+    .side-bottom strong,.rudiment-check,.rudiment-summary span,input[type=date],input[type=number]{font-family:ui-monospace,"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+    .stat-n,.rudiment-summary strong,.chip,.pill,.nav-count{font-variant-numeric:tabular-nums}
+    /* C8–C10 (25 Nov 2026) */
+    @media(max-width:760px){.sidebar{position:relative}}
+    .btn.danger{color:#ff9c88;border-color:#7a4a42}.btn.danger:hover{background:#4a3431;border-color:#b4685a}
+    input::placeholder,textarea::placeholder{color:#b1b2ad;opacity:1}
+    .foot{color:#b3b5ae}
+
+    /* Print reset (25 Nov 2026): dark ink on white paper, whatever the screen theme. */
+    @media print{
+      :root{--ink:#111;--ink2:#333;--muted:#555;--line:#bbb;--bg:#fff;--card:#fff;--teal:#1d5e2c;--gold:#6b4a12}
+      html,body,.page{background:#fff!important;color:#111!important}
+      .page::before,.sidebar::before,.diamond-mark{display:none!important}
+      .hero,.card,.skill-card,.lesson,.strand-tile,.goal,.history-item,.toolbox,.empty,.check-row,.lesson-tasks label,.rudiment-summary,.rudiment-tools,.rudiment-item,.field input,.field textarea,.field select,.skill-note,.levels button,.chip,.pill,.tip,.notice,.skill-card .target,.lesson-number{background:#fff!important;color:#111!important;border-color:#bbb!important}
+      h1,h2,h3,.stat-n,.goal-title,.field label,.field-label,.rudiment-name strong,.rudiment-summary strong,.strand-tile strong,.section-title h2{color:#111!important}
+      p,.skill-card p,.muted,.note,.small,.stat-label,.stat-foot,.lesson-desc,.goal-sub,.skill-source,.rudiment-name span,.hero p,.levels button{color:#333!important}
+      .eyebrow,.skill-card .eyebrow,.minor,.brand-kicker{color:#1d5e2c!important}
+      html,input,input[type=checkbox],input[type=date]{color-scheme:light!important}
+      .levels button.selected{background:#ddd!important;color:#111!important;font-weight:800}
+      .progress{background:#ddd!important}.progress .bar{background:#1d5e2c!important}
+      .card::before{background:#1d5e2c!important}
+    }
+
+    /* 26 Nov 2026 rebuild: C12–C29 and features F1, F2, F5, F6, F7. See CORRECTIONS.md. */
+    .page::before{display:none}
+    .hero{grid-template-columns:1fr;padding:26px 30px}
+    .hero h1{margin-bottom:4px}
+    .page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:0 0 20px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+    .page-head h1{font-size:clamp(24px,2.4vw,32px);margin:4px 0 0;font-weight:850}
+    .page-head p{margin:6px 0 0;color:var(--muted);max-width:660px}
+    .toast{z-index:60}
+    /* C25: 12 px type floor, 44 px tap targets */
+    .eyebrow,.brand-kicker,.minor,.pill,.chip,.nav-count,.rudiment-name span,.rudiment-check,.levels button,.skill-source,.foot,.rudiment-summary span,.stat-foot,.stat-label,.note,.small,small,.tab,.btn.small,.nav button,.field label,.field-label{font-size:12px}
+    .pill.success{font-size:12px}
+    .btn,.tab,.nav button{min-height:44px}
+    .btn.small{min-height:44px;padding:8px 12px}
+    .levels button{min-height:44px;line-height:1.2;white-space:normal;padding:6px 3px;font-size:12px}
+    .check-row{min-height:52px}
+    .verified-row label{min-height:44px}
+    .verified-row input,.check-row input,.goal input[type=checkbox],.lesson-tasks input{width:20px;height:20px}
+    .lesson-tasks label{min-height:52px}
+    .history-item{padding:4px 15px}
+    .history-item details summary{padding:12px 0;min-height:44px}
+    .field input,.field select{min-height:44px}
+    .nav .short{display:none}
+    @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+    /* Today */
+    .draft-banner{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px;font-size:14px}
+    .first-run{margin-bottom:16px;font-size:14px}
+    .session-card{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);padding:0}
+    .session-card::before{margin-bottom:0!important;grid-column:1/-1}
+    .session-card>section{padding:20px;min-width:0}
+    .session-card>section+section{border-left:1px solid var(--line)}
+    .step{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:4px;background:#b3ef66;color:#141712;font:800 13px/1 ui-monospace,"SFMono-Regular",Consolas,monospace;margin-right:9px;vertical-align:2px}
+    .warm-wrap{display:flex;gap:14px;align-items:center;margin:0 0 12px}
+    .warm-diamond{width:96px;height:96px;flex-shrink:0}
+    .warm-diamond rect{transition:fill .2s}
+    .practice-card .section-card-header{margin-bottom:6px}
+    .practice-facts{display:flex;gap:26px;flex-wrap:wrap;margin:4px 0 0}
+    .practice-facts div{display:flex;flex-direction:column;gap:2px}
+    .practice-facts b{font-size:17px;font-weight:750}
+    .weeks{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;height:132px;margin-top:16px}
+    .week{display:flex;flex-direction:column;align-items:center;gap:5px;min-width:0}
+    .week .colwrap{flex:1;width:100%;display:flex;align-items:flex-end;justify-content:center}
+    .week .col{width:100%;max-width:40px;background:#505057;border-radius:3px 3px 0 0;min-height:3px}
+    .week.has .col{background:#b3ef66}
+    .week.now .col{box-shadow:0 0 0 1px #35353b,0 0 0 2px #b3ef66}
+    .week span,.week b{font:12px/1.2 ui-monospace,"SFMono-Regular",Consolas,monospace;color:var(--muted);white-space:nowrap}
+    .week b{color:var(--ink);min-height:14px}
+    /* Metronome (F7) */
+    .metro{margin-top:16px;border:1px solid #666670;border-radius:6px;background:#2f2f35}
+    .metro>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;min-height:48px;cursor:pointer;list-style:none;font-weight:750}
+    .metro>summary::-webkit-details-marker{display:none}
+    .metro>summary::after{content:"+";font:700 18px/1 ui-monospace,monospace;color:#b3ef66}
+    .metro[open]>summary::after{content:"–"}
+    .metro-body{padding:0 14px 14px;display:grid;gap:12px}
+    .metro-controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+    .metro-bpm{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;gap:6px}
+    .metro-bpm input{text-align:center;font:700 18px ui-monospace,"SFMono-Regular",Consolas,monospace}
+    .metro input[type=range]{width:100%;accent-color:#b3ef66;min-height:44px}
+    .goal-tick{display:grid;place-items:center;width:44px;height:44px;margin:-10px -6px -10px -10px;cursor:pointer}
+    .metro-grid i.bar{background:#4a4030}
+    .metro-float{position:fixed;left:16px;bottom:16px;z-index:40;display:flex;gap:8px;align-items:center;background:#2c2c31;border:1px solid #b3ef66;border-radius:6px;padding:6px 6px 6px 12px;font-size:13px}
+    .metro-float[hidden]{display:none}
+    @media(max-width:760px){.metro-float{bottom:84px;left:10px}}
+    .print-only{display:none}
+    .metro-grid{display:flex;gap:3px;min-height:26px}
+    .metro-grid i{flex:1;height:24px;background:#3c3c43;border:1px solid #5b5b63;border-radius:2px}
+    .metro-grid i.beat{border-bottom:3px solid #c9cbc4}
+    .metro-grid i.acc{border-top:4px solid #ffbc74}
+    .metro-grid i.gs{margin-left:7px}
+    .metro-grid i.on{background:#b3ef66;border-color:#b3ef66}
+    @media(max-width:560px){.metro-controls{grid-template-columns:1fr}}
+    /* Skills */
+    .skill-more summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--ink2);padding:12px 0;min-height:44px}
+    .skill-more .target{margin-top:2px}
+    .skill-more .tempo{margin-top:12px}
+    @media(max-width:760px){.skill-card{padding:14px;gap:8px}.skill-card p{font-size:14px}}
+    .skill-more .skill-source{margin-top:8px}
+    .levels button[aria-pressed=true]{background:#b3ef66;color:#1b1e15;border-color:#b3ef66}
+    .tempo{border-top:1px solid var(--line);padding-top:11px;display:grid;gap:8px}
+    .tempo-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+    .tempo-add{display:grid;grid-template-columns:minmax(0,110px) auto;gap:8px;align-items:center}
+    .tempo-add input{min-height:44px;border:1px solid #666670;background:#3c3c43;color:#f1f1ed;border-radius:5px;padding:8px 10px;font:14px ui-monospace,"SFMono-Regular",Consolas,monospace;color-scheme:dark;width:100%}
+    .spark{display:block;width:100%;max-width:220px;height:40px}
+    .tempo-hist summary{cursor:pointer;font-size:12px;color:var(--muted);padding:13px 0;min-height:44px}
+    .tempo-hist ul{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:4px}
+    .tempo-hist li{display:flex;justify-content:space-between;align-items:center;gap:8px;font:12px ui-monospace,"SFMono-Regular",Consolas,monospace;color:var(--ink2)}
+    .tempo-hist li button{min-height:32px;min-width:44px}
+    /* Pathway */
+    .lesson.current{border-color:#b3ef66;box-shadow:inset 4px 0 0 #b3ef66}
+    .chip.next{background:#b3ef66;color:#141712;border-color:#b3ef66}
+    /* Rudiments */
+    .rudiment-item{padding:0 0 0 4px;gap:0}
+    .rud-open{flex:1;display:flex;align-items:center;gap:13px;background:none;border:0;color:inherit;text-align:left;padding:8px 10px;min-height:52px;min-width:0;border-radius:4px}
+    .rud-open:hover{background:#414147}
+    .rud-open:hover .rudiment-name strong{text-decoration:underline;text-decoration-color:#b3ef66}
+    .rudiment-check{min-height:52px;padding:0 14px;border-left:1px solid #595961;cursor:pointer;align-self:stretch}
+    .rudiment-check input{width:20px;height:20px}
+    /* Overlays (C26, F5) */
+    body.locked{overflow:hidden}
+    .overlay{position:fixed;inset:0;z-index:50;background:rgba(14,14,17,.94);display:flex;flex-direction:column}
+    .overlay[hidden]{display:none}
+    .overlay-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;background:#2c2c31;border-bottom:1px solid #58585e;flex-wrap:wrap}
+    .overlay-bar h2{font-size:18px}
+    .overlay-body{flex:1;overflow:auto;padding:14px;-webkit-overflow-scrolling:touch}
+    .rud-panel{max-width:880px;width:100%;margin:auto;display:grid;gap:14px}
+    /* P4: notation is drawn by notation.js as inline SVG in currentColor: dark ink on a paper panel. */
+    .notation{background:#f4f3ef;color:#17171b;border:1px solid #58585e;border-radius:4px;padding:14px 12px;overflow-x:auto}
+    .notation svg{margin:auto}
+    /* The drawing's own class names (e.g. "note") must not pick up the app's text colours. */
+    .notation svg *{color:inherit}
+    .rud-credit{margin:0}
+    /* P1 (26 Nov 2026): one in-page dialog replaces every browser confirm. */
+    .overlay.modal{z-index:55;align-items:center;justify-content:center;padding:16px;background:rgba(14,14,17,.82)}
+    .modal-box{background:#2c2c31;border:1px solid #6a6a72;border-top:3px solid #b3ef66;border-radius:7px;padding:20px;width:100%;max-width:500px;max-height:100%;overflow:auto;display:grid;gap:14px}
+    .modal-box h2{font-size:19px}
+    .modal-box p{margin:0}
+    .modal-body{display:grid;gap:12px}
+    .modal-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+    /* P2: backup text boxes (copy fallback, paste-to-import) */
+    .modal-text{display:block;width:100%;min-height:150px;resize:vertical;border:1px solid #666670;background:#3c3c43;color:#f1f1ed;border-radius:5px;padding:10px;font:12px/1.45 ui-monospace,"SFMono-Regular",Consolas,"Liberation Mono",monospace;color-scheme:dark}
+    /* Report (F2) */
+    .report-controls{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-bottom:18px}
+    .report-controls .field{width:170px}
+    .report{background:var(--card);border:1px solid #55555d;border-radius:7px;padding:26px 28px}
+    .report h2{font-size:19px;margin:28px 0 10px}
+    .report-title{border-bottom:2px solid #b3ef66;padding-bottom:14px}
+    .report-title h2{margin:6px 0 4px;font-size:24px}
+    .report table{width:100%;border-collapse:collapse;font-size:13px}
+    .report th,.report td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+    .report th{font:700 12px ui-monospace,"SFMono-Regular",Consolas,monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+    .report-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:16px}
+    .report-facts div{border:1px solid var(--line);border-radius:5px;padding:10px 12px}
+    .report-facts b{display:block;font-size:22px}
+    .report-entry{border-bottom:1px solid var(--line);padding:10px 0;font-size:13px;break-inside:avoid}
+    .report-entry p{margin:3px 0}
+    .report-list{columns:2;column-gap:28px;font-size:13px;padding-left:18px}
+    .report-list li{break-inside:avoid;margin-bottom:3px}
+    @media(max-width:700px){.report{padding:18px 14px}.report-facts{grid-template-columns:repeat(2,1fr)}.report-list{columns:1}.report table{font-size:12px}}
+    /* C24: phone tab bar */
+    @media(max-width:1050px){.session-card{grid-template-columns:1fr}.session-card>section+section{border-left:0;border-top:1px solid var(--line)}}
+    @media(max-width:760px){
+      .sidebar .nav{position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding:6px 6px calc(6px + env(safe-area-inset-bottom));background:#2c2c31;border-top:1px solid #6a6a72;overflow:visible}
+      .sidebar .nav button{flex-direction:column;justify-content:center;gap:0;padding:6px 2px;min-height:54px;white-space:normal;text-align:center;line-height:1.15}
+      .nav .full,.nav-count{display:none}.nav .short{display:inline}
+      .page{padding-bottom:110px}
+      .toast{top:12px;bottom:auto;left:12px;right:12px;max-width:none}
+      .hero{padding:20px 18px}
+      .page-head{margin-bottom:14px}
+      .cards{grid-template-columns:1fr 1fr 1fr}
+      .stat-label{font-size:12px;line-height:1.25}
+      .weeks{gap:4px}
+      .week span{font-size:12px;letter-spacing:-.04em}
+      .report-controls .field{width:calc(50% - 6px)}
+    }
+    @media(max-width:420px){.cards{grid-template-columns:1fr}.weeks{gap:3px}.week:nth-child(even):not(.now) span{visibility:hidden}.week b{font-size:12px;letter-spacing:-.06em}}
+    /* C19: print */
+    @media print{
+      #goalForm,.toolbox,.toolbox-title,.teacher-card,.session-log,.skill-note-field,.metro-float,.metro,.tempo-add,.tempo-hist,.draft-banner,.first-run,.rudiment-tools,.overlay,.report-controls,.sidebar .nav,.page-head .actions{display:none!important}
+      body.on-report .page-head,body.on-report .foot{display:none!important}
+      .report{border:0!important;padding:0!important;background:#fff!important;color:#111!important}
+      .report th{color:#333!important}.report td,.report th,.report-entry,.report-facts div{border-color:#bbb!important;color:#111!important}
+      .report-title{border-color:#1d5e2c!important}
+      .session-card>section+section{border-color:#bbb!important}
+      .warm-diamond rect{stroke:#888}
+      .week .col{background:#bbb!important}.week.has .col{background:#1d5e2c!important}
+      .rud-open{color:#111!important}
+      .lesson.current{box-shadow:none}
+      .print-only{display:block}
+      .session-card{grid-template-columns:1fr!important}
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-kicker">Music Extension · 2027</div><div class="brand-title">Percussion<br><span>Technique Lab</span></div><div class="brand-meta" id="brandMeta">Performance development</div></div>
+    <div class="side-rule"></div>
+    <nav class="nav" aria-label="Sections">
+      <button data-nav="today" class="active"><span class="nav-dot"></span><span class="full">Today's practice</span><span class="short">Today</span></button>
+      <button data-nav="skills"><span class="nav-dot"></span><span class="full">Technique tracker</span><span class="short">Technique</span></button>
+      <button data-nav="pathway"><span class="nav-dot"></span><span class="full">8-lesson pathway</span><span class="short">Pathway</span></button>
+      <button data-nav="goals"><span class="nav-dot"></span><span class="full">Goals & journal</span><span class="short">Goals</span></button>
+      <button data-nav="rudiment-ref"><span class="nav-dot"></span><span class="full">Rudiment library</span><span class="short">Rudiments</span> <span class="nav-count">40</span></button>
+    </nav>
+    <div class="side-bottom"><strong>HEAR → DO → WRITE</strong><br>Develop the rhythmic language.<br>Document the evidence.</div>
+  </aside>
+  <main class="page" id="main">
+    <div class="topline"><div class="ident"><span class="pill">RBSC · HSC 2027</span><span class="pill success">Offline · saves on this browser</span></div><div class="actions"><button class="btn small" data-action="export">Export progress</button><button class="btn small" data-go="report">Evidence report</button></div></div>
+    <section id="panel-today"></section><section id="panel-skills" hidden></section><section id="panel-pathway" hidden></section><section id="panel-goals" hidden></section><section id="panel-rudiment-ref" hidden></section><section id="panel-report" hidden></section>
+    <div class="foot">A supplement to your Music Extension Performance Notebook, especially Section 03 (pp. 8–13), Section 06 (pp. 19–20) and Section 07 (pp. 21–23). The extended technique and the eight-lesson pathway are teaching scaffolds, not official HSC assessment requirements. Your progress stays in this browser unless you export it.</div>
+  </main>
+</div>
+<div class="metro-float" id="metroFloat" hidden><span></span><button class="btn small" data-action="metro-stop">Stop</button></div>
+<div class="toast" id="notification" role="status" aria-live="polite"></div>
+<div class="overlay" id="rudOverlay" hidden></div>
+<div class="overlay modal" id="dialog" hidden></div>
+<input id="importFile" class="hide" type="file" accept="application/json,.json" aria-label="Import saved progress">
+<!-- P4: notation.js draws the 40 rudiments (window.Rudiments). The app still runs without it and says so. -->
+<script src="notation.js"></script>
+<script>
+(()=>{'use strict';
+const STORAGE='rbsc-oc-percussion-lab-v1';
+const METRO_KEY='rbsc-oc-percussion-lab-metronome';
+/* P3 / P6: address of the website copy (GitHub Pages), shown where printing is blocked. Empty until the public site exists. */
+const PAGES_URL='https://shmungfroi.github.io/percussion-lab/';
+const STRANDS=[
+  {id:'diamonds',name:'Rhythm Diamonds',short:'Diamonds',intro:'The central spine: embody, read, permute, orchestrate and create rhythmic ideas.',color:'#5fd3c4'},
+  {id:'subdivision',name:'Subdivision & metre',short:'Subdivision',intro:'An internal rhythmic grid across divisions of the beat and odd metres.',color:'#8fb2e8'},
+  {id:'rudiments',name:'Stick control & rudiments',short:'Rudiments',intro:'Rebound, dynamics, articulation, strokes, flams, drags and rolls.',color:'#f0a47e'},
+  {id:'independence',name:'Polyrhythm & independence',short:'Independence',intro:'Simultaneous rates, hand/foot combinations and interactive jazz coordination.',color:'#b9a0dc'},
+  {id:'mallets',name:'Mallet technique',short:'Mallets',intro:'Tone, melodic facility, two- and four-mallet control, voicing and repertoire.',color:'#e0c070'}
+];
+const SKILLS=[
+  {id:'d1',s:'diamonds',title:'Embodied pulse',task:'Maintain a steady foot pulse while speaking/clapping groups of 2, 3, 4, 5 and 7.',target:'Pulse remains stable when group boundaries fall between steps.',source:'Extended scaffold'},
+  {id:'d2',s:'diamonds',title:'332 diamond',task:'Speak, clap, accent and perform 3+3+2, 3+2+3 and 2+3+3 over a shared quaver grid.',target:'All three rotations from memory, then transfer to an instrument.',source:'Extended scaffold'},
+  {id:'d3',s:'diamonds',title:'556 diamond',task:'Speak, clap and play 5+5+6, 5+6+5 and 6+5+5 in semiquavers.',target:'Clear group starts, consistent beat, no misplaced subdivisions.',source:'Notebook p. 9 + scaffold'},
+  {id:'d4',s:'diamonds',title:'772 diamond',task:'Perform the rotations 7+7+2, 7+2+7 and 2+7+7, with regular underlying subdivisions.',target:'Can notate, perform and explain each grouping.',source:'Notebook p. 9 + scaffold'},
+  {id:'d5',s:'diamonds',title:'Alternative pathways',task:'Read more than one pathway through an authentic Rhythm Diamond diagram from Sheehan’s resources.',target:'Can choose, demonstrate and explain two pathways.',source:'Sheehan extension'},
+  {id:'d6',s:'diamonds',title:'Orchestration & invention',task:'Transfer diamond accents to kit and mallets; compose and improvise using one structure.',target:'Rhythmic integrity survives changes of sound, dynamics and texture.',source:'Extended scaffold'},
+  {id:'s1',s:'subdivision',title:'Subdivision 1–4',task:'At a steady crotchet pulse, alternate crotchets, quavers, triplets and semiquavers.',target:'Four beats per subdivision, ascending and descending without tempo drift.',source:'Extended scaffold'},
+  {id:'s2',s:'subdivision',title:'Quintuplets to septuplets',task:'Progress from 5 to 6 to 7 evenly spaced notes per crotchet beat.',target:'Even spacing and clear return to simpler subdivisions.',source:'Extended scaffold'},
+  {id:'s3',s:'subdivision',title:'Full subdivision ladder',task:'Perform subdivisions 1 to 8 per beat and back at a controlled tempo.',target:'Consistent beat; unforced, clear articulation.',source:'Extended scaffold'},
+  {id:'s4',s:'subdivision',title:'Additive metres',task:'Perform 5/8 and 7/8 with different internal groupings while retaining the same subdivision.',target:'2+3 versus 3+2; all three common 7/8 groupings.',source:'Extended scaffold'},
+  {id:'s5',s:'subdivision',title:'Displacement & modulation',task:'Displace accent patterns and explore a defined metric modulation in a phrase.',target:'Accurately explains the old and new beat relationship.',source:'Notebook glossary p. 36 + scaffold'},
+  {id:'r1',s:'rudiments',title:'Singles & doubles',task:'Single- and double-stroke rolls with relaxed rebound, equal hands and steady timing.',target:'Even sound and articulation across controlled tempo changes.',source:'Notebook pp. 12–13 + scaffold'},
+  {id:'r2',s:'rudiments',title:'Dynamic stick heights',task:'Play accents and taps at two controlled heights; vary dynamics without losing time.',target:'Clear accents, consistent ghost notes, no tension.',source:'Notebook p. 12'},
+  {id:'r3',s:'rudiments',title:'Paradiddle family',task:'Single, double, triple and paradiddle-diddle patterns, including accent shifts.',target:'Clean sticking and usable musical phrasing.',source:'Notebook p. 12 + scaffold'},
+  {id:'r4',s:'rudiments',title:'Flams & drags',task:'Flam, flam tap, flam accent and basic drags with close grace notes.',target:'Controlled grace-note height and consistent spacing.',source:'Notebook p. 13 + scaffold'},
+  {id:'r5',s:'rudiments',title:'Open & closed rolls',task:'Open double-stroke rolls, measured rolls and closed/buzz rolls at contrasting dynamics.',target:'Even stroke distribution, clean starts and releases.',source:'Notebook p. 13'},
+  {id:'r6',s:'rudiments',title:'Orchestrate & phrase',task:'Move rudiments between snare and toms; write a two-bar phrase with dynamics.',target:'Rudiments function as musical gestures, not just exercises.',source:'Notebook p. 13'},
+  {id:'i1',s:'independence',title:'3 against 2',task:'Use speech and two hands, then transfer one layer to a foot.',target:'Each part stays independent across a repeated six-slot cycle.',source:'Extended scaffold'},
+  {id:'i2',s:'independence',title:'4 against 3',task:'Establish the twelve-slot relationship and perform it with alternating limb pairings.',target:'Two rates remain stable for repeated cycles.',source:'Extended scaffold'},
+  {id:'i3',s:'independence',title:'5 against 4',task:'Construct and perform 5:4 slowly, first vocally, then with two limbs.',target:'Accurate, unhurried alignment and independence.',source:'Extended scaffold'},
+  {id:'i4',s:'independence',title:'Three and four layers',task:'Maintain an ostinato while changing an independent hand or foot pattern.',target:'Stable time, even while one layer changes.',source:'Notebook pp. 8–9 + scaffold'},
+  {id:'i5',s:'independence',title:'Jazz time & comping',task:'Ride pattern and left-foot hi-hat pulse with independent snare/bass comping.',target:'Groove responds musically to a soloist without losing internal pulse.',source:'Notebook p. 36 + scaffold'},
+  {id:'m1',s:'mallets',title:'Two-mallet fundamentals',task:'Even alternating strokes, rebound, bar placement and dynamic balance.',target:'Consistent tone and clean articulation on tuned percussion.',source:'Notebook pp. 10–11 + scaffold'},
+  {id:'m2',s:'mallets',title:'Scales, arpeggios & leaps',task:'Play melodic scales, arpeggios and interval leaps with rhythmic precision.',target:'Pitch accuracy and consistent sound through changes of register.',source:'Extended scaffold'},
+  {id:'m3',s:'mallets',title:'Four-mallet control',task:'Develop an appropriate grip with double-vertical, single-independent and lateral strokes.',target:'Comfortable, controlled stroke types at an achievable tempo.',source:'Notebook pp. 10–11 + scaffold'},
+  {id:'m4',s:'mallets',title:'Four-mallet permutations',task:'Play 1234, 4321, 1324 and 4231 on a C chord, then F and G.',target:'Even notes, consistent hand shape and quiet movement.',source:'Notebook p. 10'},
+  {id:'m5',s:'mallets',title:'Voicing, rolls & dampening',task:'Bring out a melody within chords; practise independent rolls and clean releases.',target:'Voiced phrases and intentional silence rather than uncontrolled ringing.',source:'Notebook p. 11'},
+  {id:'m6',s:'mallets',title:'Repertoire & diamonds',task:'Apply a chosen mallet-work passage and one 332/556 grouping to tuned percussion.',target:'Technique can be transferred to an expressive musical phrase.',source:'Notebook p. 6 + scaffold'}
+];
+const WARMUP=[
+  {id:'pulse',name:'Pulse & subdivision',hint:'Internal grid; subdivisions change, beat stays stable'},
+  {id:'diamond',name:'Rhythm Diamond',hint:'Speak → body → hands/limbs → instrument'},
+  {id:'rudiments',name:'Rudiments',hint:'Singles, doubles, paradiddles, flams or rolls'},
+  {id:'independence',name:'Polyrhythm & independence',hint:'Two rates or a steady ostinato with a changing layer'},
+  {id:'mallets',name:'Mallet technique',hint:'Two/four-mallet control and musical tone'}
+];
+const LESSONS=[
+ {name:'Baseline & 332',focus:'Establish the current technical baseline and a consistent pulse.',tasks:['Record the baseline (pulse, rudiments, 3:2, mallet scale).','Speak, clap and play the three 332 rotations.','Write one specific technical priority and next action.'],evidence:'First dated recording + diagnostic note.'},
+ {name:'Embodiment & 3:2',focus:'Move 332 through voice, hands and feet.',tasks:['Maintain a walking pulse while articulating 332.','Perform 3:2 with both hands, then hand and foot.','Apply 332 accents to a short kit phrase.'],evidence:'3:2 stays stable over four complete cycles.'},
+ {name:'556 & subdivision',focus:'Extend additive groupings without losing the beat.',tasks:['Play all 556 rotations (semiquavers).','Complete subdivision ladder 1–5 and back.','Record accents against a steady pulse and appraise.'],evidence:'Three 556 rotations with identifiable group starts.'},
+ {name:'556 on the kit',focus:'Develop coordination and rudimental orchestration.',tasks:['Orchestrate 556 accents on snare and toms.','Maintain ride/hi-hat ostinato beneath the grouping.','Use one paradiddle inversion in a two-bar phrase.'],evidence:'Stable ostinato and musical phrase.'},
+ {name:'772 & mallet phrasing',focus:'Transfer irregular groupings into pitched music.',tasks:['Speak, clap and perform all 772 rotations.','Play a two-mallet scale/fragment with 772 accents.','Choose one prospective mallet piece and list its technical demands.'],evidence:'Dated recording of 772 on a mallet instrument.'},
+ {name:'4:3 & dynamic contrast',focus:'Preserve two rates while changing timbre and dynamics.',tasks:['Perform 4:3 with hands then alternate limb pairings.','Play contrasting accents/taps over a fixed pulse.','Voice a four-mallet chord phrase or two-mallet melody.'],evidence:'4:3 maintained for multiple cycles without pulse drift.'},
+ {name:'New pathways & composition',focus:'Create new material from established rhythmic structures.',tasks:['Explore two pathways in a Sheehan Rhythm Diamond.','Compose an original short diamond-derived phrase.','Orchestrate it on kit or tuned percussion.'],evidence:'Notation, performance and explanation.'},
+ {name:'Consolidation & appraisal',focus:'Demonstrate independence, technical control and musical choice.',tasks:['Record a prepared multi-strand technique demonstration.','Identify two strengths and one priority with timestamps.','Set next-term goals informed by repertoire and evidence.'],evidence:'Recorded demonstration + short critical appraisal.'}
+];
+const DEFAULT_GOALS=[
+ {id:'g1',text:'Choose a tuned-percussion solo and identify its three main technical challenges.',due:'',done:false},
+ {id:'g2',text:'Perform the complete 332 rotations from memory with an embodied pulse.',due:'',done:false},
+ {id:'g3',text:'Demonstrate independent 3:2 using two limbs and transfer it to the kit.',due:'',done:false}
+];
+const LEVELS=['Not started','Exploring','Consistent','Applied'];
+const LEVEL_HELP=['Not started yet','Exploring: working on it slowly','Consistent: reliable at a steady tempo','Applied: used in real music'];
+const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const WIDE=window.matchMedia('(min-width:761px)');
+const RUDIMENTS=[
+  'Single Stroke Roll',
+  'Single Stroke Four',
+  'Single Stroke Seven',
+  'Multiple Bounce Roll',
+  'Triple Stroke Roll',
+  'Double Stroke Open Roll',
+  'Five Stroke Roll',
+  'Six Stroke Roll',
+  'Seven Stroke Roll',
+  'Nine Stroke Roll',
+  'Ten Stroke Roll',
+  'Eleven Stroke Roll',
+  'Thirteen Stroke Roll',
+  'Fifteen Stroke Roll',
+  'Seventeen Stroke Roll',
+  'Single Paradiddle',
+  'Double Paradiddle',
+  'Triple Paradiddle',
+  'Paradiddle-Diddle',
+  'Flam',
+  'Flam Accent',
+  'Flam Tap',
+  'Flamacue',
+  'Flam Paradiddle',
+  'Single Flammed Mill',
+  'Flam Paradiddle-Diddle',
+  'Pataflafla',
+  'Swiss Army Triplet',
+  'Inverted Flam Tap',
+  'Flam Drag',
+  'Drag (Ruff)',
+  'Single Drag Tap',
+  'Double Drag Tap',
+  'Lesson 25',
+  'Single Dragadiddle',
+  'Drag Paradiddle #1',
+  'Drag Paradiddle #2',
+  'Single Ratamacue',
+  'Double Ratamacue',
+  'Triple Ratamacue'
+];
+const RUD_CREDIT='The 40 International Drum Rudiments are the standard list published by the Percussive Arts Society. Notation drawn for this app.';
+
+/* ---------- dates ---------- */
+function localDate(d=new Date()){const p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`}
+function parseDate(s){const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||'');return m?new Date(+m[1],+m[2]-1,+m[3]):null}
+function fmtDate(s){const d=parseDate(s);return d?`${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`:String(s||'')}
+function fmtShort(d){return `${d.getDate()} ${MONTHS[d.getMonth()]}`}
+function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x}
+function mondayOf(d){return addDays(d,-((d.getDay()+6)%7))}
+function dayDiff(a,b){return Math.round((b-a)/864e5)}
+
+/* ---------- state ---------- */
+function freshDraft(){return {date:localDate(),checks:[],minutes:'25',focus:'',heard:'',worked:'',next:'',evidence:''}}
+function defaults(){return {version:1,teacher:'',studentCode:'',skills:{},lessons:{},goals:structuredClone(DEFAULT_GOALS),sessions:[],rudimentChecks:{},tempos:[],draft:freshDraft(),created:Date.now()}}
+function validShape(v){return v&&v.version===1&&Array.isArray(v.goals)&&Array.isArray(v.sessions)&&v.skills&&typeof v.skills==='object'&&v.lessons&&typeof v.lessons==='object'}
+function cleanDraft(d){const f=freshDraft(),o={...f};if(d&&typeof d==='object'){for(const k of ['date','minutes','focus','heard','worked','next','evidence'])if(d[k]!==undefined&&d[k]!==null)o[k]=String(d[k]);o.checks=Array.isArray(d.checks)?d.checks.filter(c=>WARMUP.some(w=>w.id===c)):[];o.datePicked=d.datePicked===true}if(!/^\d{4}-\d{2}-\d{2}$/.test(o.date))o.date=f.date;if(o.minutes===''&&draftEmpty(o))o.minutes='25';return o}
+/* P5: the student is only ever a short code, set in the app and stored with the progress. Old data has none and loads unchanged. */
+function cleanCode(c){return typeof c==='string'?c.trim().slice(0,12):''}
+function normalise(v){return {...defaults(),...v,studentCode:cleanCode(v.studentCode),rudimentChecks:v.rudimentChecks&&typeof v.rudimentChecks==='object'&&!Array.isArray(v.rudimentChecks)?v.rudimentChecks:{},tempos:Array.isArray(v.tempos)?v.tempos.filter(validTempo):[],draft:cleanDraft(v.draft)}}
+/* Returns the stored state, null when nothing is stored, undefined when storage can't be read. */
+function readStored(){try{const raw=localStorage.getItem(STORAGE);if(raw===null)return null;const v=JSON.parse(raw);return validShape(v)?normalise(v):undefined}catch(e){return undefined}}
+function load(){return readStored()||defaults()}
+let storageNotice='';{let raw=null;try{raw=localStorage.getItem(STORAGE)}catch(e){}if(raw!==null&&readStored()===undefined){const k=STORAGE+'-unreadable-'+Date.now();try{localStorage.setItem(k,raw);storageNotice=`Saved data in this browser couldn't be read, so the app started empty. The old data was kept under "${k}"; export nothing over it and ask your teacher.`}catch(e){storageNotice='Saved data in this browser could not be read, so the app started empty.'}}}
+let state=load(),tab='today',skillFilter='all',rudimentFilter='all',staleDraftDismissed=false,rudOpen=0,lastFocus=null,reportFrom='',reportTo='';
+function refresh(){const v=readStored();if(v)state=v}
+function store(){try{localStorage.setItem(STORAGE,JSON.stringify(state));return true}catch(e){toast('Could not save to this browser. Export your progress.');return false}}
+/* C14: always re-read before changing, so a second tab or window is never overwritten. */
+function mutate(fn){refresh();fn(state);return store()}
+
+const $=s=>document.querySelector(s);const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let toastTimer;function toast(msg){const el=$('#notification');el.textContent=msg;el.classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('visible'),3600)}
+function skillData(id){return {level:0,verified:false,evidence:'',...(state.skills[id]||{})}}
+function skillStats(){return {consistent:SKILLS.filter(s=>skillData(s.id).level>=2).length,applied:SKILLS.filter(s=>skillData(s.id).level===3).length,verified:SKILLS.filter(s=>skillData(s.id).verified).length,total:SKILLS.length}}
+function lessonData(i){return {checks:[],note:'',verified:false,date:'',...(state.lessons[i]||{})}}
+function lessonsComplete(){return LESSONS.filter((l,i)=>lessonData(i).checks.length===l.tasks.length).length}
+function num(n){return String(n).padStart(2,'0')}
+function percent(a,b){return b?Math.round(100*a/b):0}
+function bar(a,b,label){return `<div class="progress" role="progressbar" aria-label="${escape(label)}" aria-valuenow="${a}" aria-valuemin="0" aria-valuemax="${b}" aria-valuetext="${a} of ${b}"><div class="bar" style="width:${percent(a,b)}%"></div></div>`}
+function mins(s){const n=Number(s.minutes||0);return n?`${n} min`:'—'}
+function sortedSessions(){return [...state.sessions].sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))||String(b.savedAt||'').localeCompare(String(a.savedAt||'')))}
+function draftEmpty(d){return !(d.checks||[]).length&&!['focus','heard','worked','next','evidence'].some(k=>String(d[k]||'').trim())}
+function pageHead(kicker,title,sub){return `<div class="page-head"><div><div class="eyebrow">${escape(kicker)}</div><h1>${escape(title)}</h1><p>${escape(sub)}</p></div></div>`}
+function temposFor(key){return state.tempos.filter(t=>t.item===key).sort((a,b)=>String(a.date).localeCompare(String(b.date))||String(a.id).localeCompare(String(b.id)))}
+function bestTempo(key){const l=temposFor(key);return l.length?Math.max(...l.map(t=>t.bpm)):0}
+
+function studentCode(){return cleanCode(state.studentCode)}
+function applyIdentity(){const c=studentCode();document.title=c?`${c} · Percussion Technique Lab`:'Percussion Technique Lab';const m=$('#brandMeta');if(m)m.textContent=c?`${c} / performance development`:'Performance development'}
+
+/* ---------- shared pieces ---------- */
+function diamondSVG(checks){
+ const cells={pulse:[0,0],diamond:[0,2],rudiments:[1,1],independence:[2,0],mallets:[2,2]};
+ const taken=Object.values(cells).map(c=>c.join());let rects='',labels='';
+ for(let r=0;r<3;r++)for(let c=0;c<3;c++){const id=Object.keys(cells).find(k=>cells[k][0]===c&&cells[k][1]===r);const on=id&&checks.includes(id);rects+=`<rect x="${-60+c*40}" y="${-60+r*40}" width="40" height="40" fill="${on?'#b3ef66':id?'#45454d':'#303036'}" stroke="#77777f" stroke-width="1.5"/>`}
+ WARMUP.forEach((w,i)=>{const [c,r]=cells[w.id];const cx=-40+c*40,cy=-40+r*40;const x=(cx-cy)/Math.SQRT2,y=(cx+cy)/Math.SQRT2;labels+=`<text x="${x.toFixed(1)}" y="${(y+6).toFixed(1)}" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="17" font-weight="700" fill="${checks.includes(w.id)?'#141712':'#d6d7d2'}">${i+1}</text>`});
+ return `<svg class="warm-diamond" viewBox="-88 -88 176 176" role="img" aria-label="Warm-up diamond: ${checks.length} of 5 strands done"><g transform="rotate(45)">${rects}</g>${labels}</svg>`}
+function spark(list){if(list.length<2)return '';const pts=list.slice(-12),vals=pts.map(t=>t.bpm),lo=Math.min(...vals),hi=Math.max(...vals),span=Math.max(hi-lo,10),W=220,H=40;const xy=pts.map((t,i)=>[6+i*(W-12)/(pts.length-1),H-6-(t.bpm-lo)/span*(H-12)]);
+ return `<svg class="spark" viewBox="0 0 ${W} ${H}" role="img" aria-label="Tempo history: ${vals.join(', ')} bpm"><polyline points="${xy.map(p=>p.map(n=>n.toFixed(1)).join(',')).join(' ')}" fill="none" stroke="#b3ef66" stroke-width="2"/>${xy.map(p=>`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="2.6" fill="#b3ef66"/>`).join('')}</svg>`}
+function tempoWidget(key,label){const list=temposFor(key);const last=list[list.length-1],best=list.length?Math.max(...list.map(t=>t.bpm)):0;
+ return `<div class="tempo"><div class="tempo-head"><span class="field-label">Tempo log</span><span class="note">${list.length?`Best ${best} bpm · last ${last.bpm} bpm on ${escape(fmtDate(last.date))}`:'No tempos logged yet'}</span></div>${spark(list)}<div class="tempo-add"><input type="number" inputmode="numeric" min="20" max="400" step="1" placeholder="bpm" aria-label="Tempo in bpm for ${escape(label)}" data-tempo-input="${escape(key)}"><button class="btn small" data-tempo-add="${escape(key)}">Log tempo</button></div>${list.length?`<details class="tempo-hist" data-key="hist:${escape(key)}"><summary>History (${list.length})</summary><ul>${[...list].reverse().map(t=>`<li><span>${escape(fmtDate(t.date))} · ${t.bpm} bpm</span><button class="btn small danger" data-tempo-del="${escape(t.id)}" aria-label="Remove ${t.bpm} bpm on ${escape(fmtDate(t.date))}">×</button></li>`).join('')}</ul></details>`:''}</div>`}
+
+/* ---------- Today ---------- */
+function practiceStrip(){
+ const today=parseDate(localDate()),thisMon=mondayOf(today),start=addDays(thisMon,-49);
+ const weeks=Array.from({length:8},(_,i)=>({mon:addDays(start,i*7),min:0,n:0}));
+ let last=null;
+ for(const s of state.sessions){const d=parseDate(s.date);if(!d||d>today)continue;if(!last||d>last)last=d;const w=Math.floor(dayDiff(start,d)/7);if(w>=0&&w<8){weeks[w].min+=Number(s.minutes||0);weeks[w].n++}}
+ const wk=new Set(state.sessions.map(s=>parseDate(s.date)).filter(d=>d&&d<=today).map(d=>dayDiff(start,mondayOf(d))/7));let streak=0;for(let i=wk.has(7)?7:6;wk.has(i);i--)streak++;
+ const max=Math.max(60,...weeks.map(w=>w.min));
+ const ago=last?dayDiff(last,today):null;const agoText=ago===null?'Not yet':ago===0?'Today':ago===1?'Yesterday':`${ago} days ago`;
+ return `<div class="card practice-card"><div class="section-card-header"><div><h3>Practice over 8 weeks</h3><div class="small muted">Minutes logged each week, Monday to Sunday</div></div></div>
+ <div class="practice-facts"><div><span class="stat-label">Last practised</span><b>${agoText}</b></div><div><span class="stat-label">This week</span><b>${weeks[7].min} min · ${weeks[7].n} ${weeks[7].n===1?'session':'sessions'}</b></div><div><span class="stat-label">Streak</span><b>${streak?`${streak} ${streak===1?'week':'weeks'} running`:'Not started'}</b></div></div>
+ <div class="weeks" role="img" aria-label="Minutes per week for 8 weeks: ${weeks.map(w=>`week of ${fmtShort(w.mon)} ${w.min} minutes`).join(', ')}">${weeks.map((w,i)=>`<div class="week ${w.n?'has':''} ${i===7?'now':''}" title="Week of ${fmtShort(w.mon)}: ${w.n} ${w.n===1?'session':'sessions'}, ${w.min} min"><b>${w.min||''}</b><div class="colwrap"><div class="col" style="height:${w.n?Math.max(6,percent(w.min,max)):3}%"></div></div><span>${i===7?'Now':fmtShort(w.mon)}</span></div>`).join('')}</div></div>`}
+function renderToday(){const st=skillStats(),lc=lessonsComplete(),d=state.draft,today=localDate(),sessions=sortedSessions();
+ const stale=d.date!==today&&!d.datePicked&&!draftEmpty(d)&&!staleDraftDismissed;const total=state.sessions.reduce((s,x)=>s+Number(x.minutes||0),0);
+ $('#panel-today').innerHTML=`<div class="hero"><div><div class="eyebrow">HSC 2027 · ${studentCode()?escape(studentCode())+' · ':''}${escape(fmtDate(today))}</div><h1>Today's practice</h1><p>Build the rhythmic language: hear it, play it, then write down what changed.</p></div></div>`+
+ (stale?`<div class="notice draft-banner"><div><strong>Unsaved draft from ${escape(fmtDate(d.date))}.</strong> Keep it to save under that date, or clear it and start today.</div><div class="row"><button class="btn small" data-action="draft-keep">Keep draft</button><button class="btn small" data-action="draft-today">Clear it, start today</button></div></div>`:'')+
+ (!state.sessions.length?`<div class="tip first-run"><strong>Start here.</strong> Tick each warm-up strand as you finish it, add a few notes on what you heard, what improved and what comes next, then save. Every saved session goes into your journal and your evidence report.</div>`:'')+
+ `<div class="cards"><div class="card"><div class="stat-label">Skills at Consistent or Applied</div><div class="stat-n">${st.consistent}<span class="muted" style="font-size:17px"> / ${st.total}</span></div>${bar(st.consistent,st.total,'Skills at Consistent or Applied')}<div class="stat-foot">${st.verified} teacher-verified</div></div><div class="card"><div class="stat-label">Pathway lessons complete</div><div class="stat-n">${lc}<span class="muted" style="font-size:17px"> / 8</span></div>${bar(lc,8,'Pathway lessons complete')}<div class="stat-foot">${8-lc} to go</div></div><div class="card"><div class="stat-label">Practice sessions</div><div class="stat-n">${state.sessions.length}</div><div class="stat-foot">${total} minutes logged</div></div></div>
+ <div class="section-title"><div><h2>Today's session</h2><div class="muted small">Warm up through all five strands, then record what happened.</div></div></div>
+ <div class="card session-card"><section><div class="section-card-header"><h3><span class="step">1</span>Warm-up</h3><span class="chip">${d.checks.length} of 5</span></div><div class="warm-wrap">${diamondSVG(d.checks)}<p class="small muted" style="margin:0">Each strand you tick fills its cell in the diamond. ${d.date!==today?`<br><strong>Draft dated ${escape(fmtDate(d.date))}.</strong>`:''}</p></div><div class="warmup-list">${WARMUP.map((w,i)=>`<label class="check-row ${d.checks.includes(w.id)?'done':''}"><input type="checkbox" data-warm="${w.id}" ${d.checks.includes(w.id)?'checked':''}><span><strong>${i+1}. ${escape(w.name)}</strong><br><span class="small muted">${escape(w.hint)}</span></span></label>`).join('')}</div><div id="metroSlot"></div><div style="margin-top:14px" class="tip"><strong>Musical objective:</strong> move a rhythmic idea between voice, body percussion, kit and mallets. Accurate rhythm is the starting point, not the end point.</div></section>
+ <section class="session-log"><div class="section-card-header"><h3><span class="step">2</span>Record this session</h3></div><div class="session-fields"><div class="field"><label for="sessionDate">Date</label><input id="sessionDate" type="date" data-draft="date" max="${today}" value="${escape(d.date)}"></div><div class="field"><label for="sessionMinutes">Minutes</label><input id="sessionMinutes" type="number" inputmode="numeric" min="0" max="600" step="5" data-draft="minutes" value="${escape(d.minutes)}" placeholder="e.g. 25"></div><div class="field span-all"><label for="sessionFocus">Technical focus</label><input id="sessionFocus" data-draft="focus" value="${escape(d.focus)}" placeholder="e.g. 556 over ride and hi-hat foot"></div><div class="field span-all"><label for="sessionHeard">Hear: what did you listen to or notice?</label><input id="sessionHeard" data-draft="heard" value="${escape(d.heard)}" placeholder="e.g. Tony Williams: ride time and snare interaction"></div><div class="field span-all"><label for="sessionWorked">Do: what did you play, and what improved?</label><textarea id="sessionWorked" data-draft="worked" placeholder="What you played and what got better">${escape(d.worked)}</textarea></div><div class="field span-all"><label for="sessionNext">Write: one specific next step</label><textarea id="sessionNext" data-draft="next" placeholder="One precise technical or musical target">${escape(d.next)}</textarea></div><div class="field span-all"><label for="sessionEvidence">Evidence reference (optional)</label><input id="sessionEvidence" data-draft="evidence" value="${escape(d.evidence)}" placeholder="e.g. Recording 24 Nov, 0:37 / notebook bar 5"></div><button class="btn teal span-all" data-action="save-session">Save session to journal</button></div></section></div>
+ ${practiceStrip()}
+ <div class="section-title"><h2>Next steps</h2></div><div class="columns"><div class="card"><div class="section-card-header"><h3>Current goals</h3><button class="btn small" data-go="goals">Manage goals</button></div><div class="mini-list">${state.goals.filter(g=>!g.done).slice(0,3).map(g=>`<div class="mini-item"><strong>${escape(g.text)}</strong>${g.due?`<span class="chip gray">${escape(fmtDate(g.due))}</span>`:''}</div>`).join('')||'<div class="note">All current goals are complete. Add a new challenge.</div>'}</div></div><div class="card"><div class="section-card-header"><h3>Recent practice</h3><button class="btn small" data-go="goals">Open journal</button></div><div class="mini-list">${sessions.slice(0,3).map(s=>`<div class="mini-item"><div><strong>${escape(fmtDate(s.date))}</strong><div class="note">${escape(s.focus||'General technique')} · ${mins(s)}</div></div><span class="chip">${(s.checks||[]).length}/5</span></div>`).join('')||'<div class="note">No sessions saved yet. Your first session becomes your baseline.</div>'}</div></div></div>`;
+ $('#metroSlot').appendChild(Metro.node());
+}
+
+/* ---------- Technique ---------- */
+function renderSkills(){const st=skillStats();const inStrand=id=>SKILLS.filter(x=>x.s===id);
+ let items=skillFilter==='all'?SKILLS:skillFilter==='unverified'?SKILLS.filter(s=>skillData(s.id).level>=2&&!skillData(s.id).verified):SKILLS.filter(s=>s.s===skillFilter);
+ $('#panel-skills').innerHTML=pageHead('Five connected strands','Technique tracker','Your level shows where each skill is up to. Teacher verification records what your teacher has seen. Levels are not HSC marks.')+
+ `<div class="strand-summary">${STRANDS.map(s=>{const all=inStrand(s.id).length,c=inStrand(s.id).filter(x=>skillData(x.id).level>=2).length;return `<div class="strand-tile"><strong>${escape(s.short)}</strong>${bar(c,all,s.name+': skills at Consistent or Applied')}<span class="small">${c} / ${all} Consistent or Applied</span></div>`}).join('')}</div>
+ <div class="card teacher-card" style="margin-bottom:17px"><div class="inline-between"><div><h3>Teacher verification</h3><div class="small muted">Your teacher enters their initials, then ticks skills they have seen at Consistent or Applied. Moving a level up keeps the sign-off; moving it down removes it.</div></div><div class="field" style="width:130px;flex-shrink:0"><label for="teacherInitials">Teacher initials</label><input id="teacherInitials" maxlength="12" value="${escape(state.teacher)}" placeholder="Initials"></div></div></div>
+ <div class="section-title"><div><h2>Skills</h2><div class="small muted">Not started → Exploring → Consistent → Applied (used in real music)</div></div><span class="pill">${st.verified} verified</span></div>
+ <div class="tabs" role="group" aria-label="Filter skills">${[{id:'all',name:'All strands'},...STRANDS.map(s=>({id:s.id,name:s.short})),{id:'unverified',name:'Awaiting sign-off'}].map(s=>`<button class="tab ${skillFilter===s.id?'active':''}" data-filter="${s.id}" aria-pressed="${skillFilter===s.id}">${escape(s.name)}</button>`).join('')}</div>
+ <div class="skills-grid" style="margin-top:15px">${items.map(s=>{const a=skillData(s.id);const parent=STRANDS.find(x=>x.id===s.s);return `<div class="skill-card ${a.verified?'verified':''}"><div class="inline-between"><span class="eyebrow" style="color:${parent.color}">${escape(parent.name)}</span>${a.verified?'<span class="chip">Verified</span>':''}</div><h3>${escape(s.title)}</h3><p>${escape(s.task)}</p><div class="levels" role="group" aria-label="Level for ${escape(s.title)}">${LEVELS.map((lv,n)=>`<button data-skill="${s.id}" data-level="${n}" aria-pressed="${a.level===n}" title="${escape(LEVEL_HELP[n])}">${escape(lv)}</button>`).join('')}</div><details class="skill-more" data-key="more:${s.id}" ${WIDE.matches?'open':''}><summary>Target, evidence and tempo${a.evidence||bestTempo('skill:'+s.id)?' ·  saved':''}</summary><div class="target"><strong>Demonstrate:</strong> ${escape(s.target)}</div><div class="skill-source">Source: ${escape(s.source)}</div>${a.evidence?`<p class="print-only"><strong>Evidence:</strong> ${escape(a.evidence)}</p>`:''}<div class="field skill-note-field" style="margin-top:10px"><label for="evidence-${s.id}">Evidence or note</label><input class="skill-note" id="evidence-${s.id}" data-skill-note="${s.id}" value="${escape(a.evidence)}" placeholder="e.g. recording 1:08, clean at 72"></div>${tempoWidget('skill:'+s.id,s.title)}</details><div class="verified-row"><label><input type="checkbox" data-verify="${s.id}" ${a.verified?'checked':''} ${a.level<2?'disabled':''}> Teacher verified</label><span class="note">${a.verified?escape(a.initials||'')+' · '+escape(fmtDate(a.verifiedAt||'')):a.level<2?'Needs Consistent or Applied':'Ready for sign-off'}</span></div></div>`}).join('')||'<div class="empty span-all">No skills are waiting for sign-off.</div>'}</div>`;
+}
+
+/* ---------- Pathway ---------- */
+function renderPathway(){const total=LESSONS.reduce((s,l,i)=>s+lessonData(i).checks.length,0),all=LESSONS.reduce((s,l)=>s+l.tasks.length,0);const current=LESSONS.findIndex((l,i)=>lessonData(i).checks.length<l.tasks.length);
+ $('#panel-pathway').innerHTML=pageHead('Suggested eight-session sequence','8-lesson pathway','Each lesson keeps the daily five-strand routine and adds one main new challenge. Tick tasks as you demonstrate them.')+
+ `<div class="card" style="margin-bottom:18px"><div class="inline-between"><div><h3>Pathway progress</h3><div class="muted small">${total} of ${all} tasks done${current>=0?` · next up: lesson ${current+1}, ${escape(LESSONS[current].name)}`:' · pathway complete'}</div></div><span class="pill success">${percent(total,all)}%</span></div><div style="margin-top:12px">${bar(total,all,'Pathway tasks done')}</div></div>
+ <div class="pathway">${LESSONS.map((l,i)=>{const a=lessonData(i),done=a.checks.length===l.tasks.length,cur=i===current;return `<div class="lesson ${done?'done':''} ${cur?'current':''}" ${cur?'aria-current="step"':''}><div class="lesson-head"><div class="lesson-number">${num(i+1)}</div><div style="flex:1"><div class="inline-between"><h3>${escape(l.name)}</h3><span class="row">${cur?'<span class="chip next">Next up</span>':''}<span class="chip ${done?'':'gray'}">${done?'Complete':`${a.checks.length}/${l.tasks.length} done`}</span></span></div><div class="lesson-desc">${escape(l.focus)}</div></div></div><div class="lesson-tasks">${l.tasks.map((t,j)=>`<label><input type="checkbox" data-lesson="${i}" data-lesson-task="${j}" ${a.checks.includes(j)?'checked':''}><span>${escape(t)}</span></label>`).join('')}</div><div class="lesson-end"><div class="note"><strong>Evidence:</strong> ${escape(l.evidence)}</div>${done?`<span class="chip">Completed ${escape(fmtDate(a.date||''))}</span>`:''}</div></div>`}).join('')}</div>`;
+}
+
+/* ---------- Goals & journal ---------- */
+function renderGoals(){const done=state.goals.filter(g=>g.done).length,sessions=sortedSessions();
+ $('#panel-goals').innerHTML=pageHead('Goals and evidence','Goals & journal','Set goals with your teacher and keep a dated record of every session.')+
+ `<div class="columns"><div class="card"><div class="section-card-header"><div><h2>Goals</h2><div class="small muted">${done} of ${state.goals.length} complete</div></div><span class="pill">Student + teacher</span></div><div class="goal-list">${state.goals.map(g=>`<div class="goal ${g.done?'complete':''}"><label class="goal-tick"><input aria-label="Goal complete: ${escape(g.text)}" type="checkbox" data-goal-check="${escape(g.id)}" ${g.done?'checked':''}></label><div><div class="goal-title">${escape(g.text)}</div><div class="goal-sub">${g.due?'Target '+escape(fmtDate(g.due))+' · ':''}${g.done?`Completed${g.completedAt?' '+escape(fmtDate(g.completedAt)):''}`:'In progress'}</div></div><button class="btn small danger" data-goal-delete="${escape(g.id)}" aria-label="Remove goal: ${escape(g.text)}">Remove</button></div>`).join('')||'<div class="empty">No goals yet. Add the next milestone below.</div>'}</div><form id="goalForm" style="margin-top:20px"><div class="session-fields"><div class="field span-all"><label for="newGoal">Add a goal</label><input id="newGoal" required maxlength="250" placeholder="e.g. Perform 4:3 across hands and feet"></div><div class="field"><label for="goalDue">Target date (optional)</label><input type="date" id="goalDue"></div><div class="field" style="justify-content:end"><button type="submit" class="btn teal">Add goal</button></div></div></form></div>
+ <div class="card"><div class="section-card-header"><h2>Practice journal</h2><span class="pill">${state.sessions.length} ${state.sessions.length===1?'entry':'entries'}</span></div><div class="stack">${sessions.length?sessions.map(s=>`<div class="history-item"><details data-key="session:${escape(s.id)}"><summary>${escape(fmtDate(s.date))} · ${escape(s.focus||'Technique practice')} <span class="note">${mins(s)}</span></summary><div class="details"><p><strong>Warm-up:</strong> ${(s.checks||[]).map(c=>escape(WARMUP.find(w=>w.id===c)?.name||c)).join(', ')||'Not recorded'}</p>${s.heard?`<p><strong>Hear:</strong> ${escape(s.heard)}</p>`:''}${s.worked?`<p><strong>Do:</strong> ${escape(s.worked)}</p>`:''}${s.next?`<p><strong>Write:</strong> ${escape(s.next)}</p>`:''}${s.evidence?`<p><strong>Evidence:</strong> ${escape(s.evidence)}</p>`:''}<button class="btn small danger" data-session-delete="${escape(s.id)}">Delete entry</button></div></details></div>`).join(''):'<div class="empty">No dated practice entries yet.</div>'}</div></div></div>
+ <div class="section-title toolbox-title"><h2>Save, transfer and print</h2></div><div class="toolbox"><div class="columns"><div><h3>Back up, move and report</h3><p class="small muted" style="margin:8px 0 12px">Progress is stored only in this browser on this device. To use another device, export a backup file or copy the backup as text, then import it there by choosing the file or pasting the text. Import <strong>replaces</strong> the progress in that browser.</p><div class="row"><button class="btn primary" data-action="export">Export JSON backup</button><button class="btn" data-action="copy-backup">Copy backup</button><button class="btn" data-action="import">Import backup</button><button class="btn teal" data-go="report">Evidence report</button></div><div class="field" style="max-width:300px;margin-top:18px"><label for="studentCode">Student code</label><input id="studentCode" maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" value="${escape(state.studentCode)}" placeholder="e.g. AB" aria-describedby="studentCodeHelp"><span class="note" id="studentCodeHelp">Initials or a short code, not a full name. Shown on the report, the page title and backup file names.</span></div></div><div class="notice"><strong>No automatic syncing.</strong> Teacher and student can share one device or swap exported files. The file holds practice notes, so store and share it carefully. Nothing is uploaded to a server by this app.</div></div></div>`;
+}
+
+/* ---------- Rudiments (C18: page built once; list updated in place so the search box keeps focus) ---------- */
+function rudName(n){return RUDIMENTS[n-1]}
+function renderRudiments(){const panel=$('#panel-rudiment-ref');
+ if(!panel.querySelector('#rudGrid')){panel.innerHTML=pageHead('Percussive Arts Society','Rudiment library','All 40 PAS International Drum Rudiments. Tap a name to see its notation and log a tempo. Tick Demonstrated once your teacher has seen it.')+
+  `<div class="rudiment-summary" id="rudSummary"></div><div class="rudiment-tools"><label class="field" for="rudimentSearch"><span class="field-label">Find a rudiment</span><input id="rudimentSearch" type="search" placeholder="Search all 40…" autocomplete="off"></label><div class="rudiment-filters" role="group" aria-label="Filter rudiments"><button data-rud-filter="all" class="btn">All 40</button><button data-rud-filter="remaining" class="btn">To practise</button><button data-rud-filter="completed" class="btn">Demonstrated</button></div></div><div class="rudiment-grid" id="rudGrid"></div><p class="note rud-credit" id="rudCredit">${escape(RUD_CREDIT)}</p>`}
+ updateRudiments()}
+function updateRudiments(){const progress=state.rudimentChecks||{};const done=RUDIMENTS.filter((n,i)=>progress[i+1]?.done).length;const q=($('#rudimentSearch')?.value||'').toLowerCase().trim();
+ $('#rudSummary').innerHTML=`<div><div class="eyebrow">Technique reference · 01–40</div><strong>${done}<em> / 40</em></strong><span>Rudiments demonstrated</span></div>${bar(done,40,'Rudiments demonstrated')}<p class="small muted">This records practice, not a formal PAS certification or HSC mark. It is included in your JSON backup and evidence report.</p>`;
+ document.querySelectorAll('[data-rud-filter]').forEach(b=>{const on=b.dataset.rudFilter===rudimentFilter;b.classList.toggle('primary',on);b.setAttribute('aria-pressed',on)});
+ const items=RUDIMENTS.map((name,i)=>({name,number:i+1})).filter(it=>(rudimentFilter==='all'||(rudimentFilter==='completed'?progress[it.number]?.done:!progress[it.number]?.done))&&(it.name.toLowerCase().includes(q)||String(it.number)===q));
+ $('#rudGrid').innerHTML=items.map(({name,number})=>{const r=progress[number]||{},best=bestTempo('rud:'+number);return `<div class="rudiment-item ${r.done?'rudiment-complete':''}"><button class="rud-open" data-rud-open="${number}" aria-label="Open notation: ${number}. ${escape(name)}"><span class="rudiment-no">${num(number)}</span><span class="rudiment-name"><strong>${escape(name)}</strong><span>${r.done?'Demonstrated '+escape(fmtDate(r.date||'')):'Not yet demonstrated'}${best?` · best ${best} bpm`:''}</span></span></button><label class="rudiment-check"><input type="checkbox" data-rud-check="${number}" ${r.done?'checked':''} aria-label="Demonstrated: ${escape(name)}"><span>Demonstrated</span></label></div>`}).join('')||'<div class="empty">No rudiments match this filter.</div>'}
+
+/* ---------- Overlays ---------- */
+function openOverlay(el){if(!lastFocus)lastFocus=document.activeElement;el.hidden=false;document.body.classList.add('locked')}
+function closeOverlays(){const was=!$('#rudOverlay').hidden;$('#rudOverlay').hidden=true;rudOpen=0;if($('#dialog').hidden)document.body.classList.remove('locked');if(was&&lastFocus&&document.contains(lastFocus))lastFocus.focus();lastFocus=null}
+/* P4: our own notation from notation.js. Anything missing or broken there becomes a plain notice, never an error. */
+function notationHTML(n){let svg='';try{const R=window.Rudiments;if(R&&typeof R.svg==='function')svg=R.svg(n,window.innerWidth<560?{maxWidth:340}:{})}catch(e){svg=''}
+ return typeof svg==='string'&&svg.trim().startsWith('<svg')?`<div class="notation" id="rudNotation">${svg}</div>`:`<p class="notice" id="rudNotationMissing">The notation can't be shown because the file notation.js did not load. Keep notation.js next to this file, or use the one-file copy. You can still tick this rudiment and log a tempo.</p>`}
+function rudGroup(n){try{const x=window.Rudiments?.list?.find?.(r=>r.n===n);const g=x&&(x.group||x.family);return typeof g==='string'?g:''}catch(e){return ''}}
+function openRudiment(n,keepFocus){rudOpen=n;const el=$('#rudOverlay'),name=rudName(n),r=(state.rudimentChecks||{})[n]||{},group=rudGroup(n);
+ el.setAttribute('role','dialog');el.setAttribute('aria-modal','true');el.setAttribute('aria-labelledby','rudTitle');
+ el.innerHTML=`<div class="overlay-bar"><h2 id="rudTitle">${n}. ${escape(name)}</h2><div class="row"><button class="btn small" data-rud-step="-1" ${n===1?'disabled':''} aria-label="Previous rudiment">‹ Prev</button><button class="btn small" data-rud-step="1" ${n===40?'disabled':''} aria-label="Next rudiment">Next ›</button><button class="btn small primary" data-action="overlay-close">Close</button></div></div><div class="overlay-body"><div class="rud-panel">${group?`<div><span class="chip gray">${escape(group)}</span></div>`:''}${notationHTML(n)}<label class="check-row ${r.done?'done':''}"><input type="checkbox" data-rud-check="${n}" ${r.done?'checked':''}><span><strong>Demonstrated</strong><br><span class="small muted">${r.done?'Ticked '+escape(fmtDate(r.date||'')):'Tick once your teacher has seen it at a steady tempo'}</span></span></label>${tempoWidget('rud:'+n,name)}<p class="note rud-credit">${escape(RUD_CREDIT)}</p></div></div>`;
+ openOverlay(el);if(!keepFocus)el.querySelector('[data-action=overlay-close]').focus({preventScroll:true})}
+
+/* ---------- In-page dialog (P1). Browser confirm/alert/prompt are blocked in sandboxed viewers, so the app never calls them. ---------- */
+let dlgResolve=null,dlgReturn=null,dlgReturnKey=null;
+/* Opens the dialog and resolves with the data-dlg value of the button pressed ('' for Escape or a tap outside). */
+function dialog(title,html,opts={}){if(dlgResolve)closeDialog('');const el=$('#dialog');dlgReturn=document.activeElement;dlgReturnKey=focusKey(dlgReturn);
+ el.setAttribute('role',opts.alert?'alertdialog':'dialog');el.setAttribute('aria-modal','true');el.setAttribute('aria-labelledby','dlgTitle');el.setAttribute('aria-describedby','dlgBody');
+ el.innerHTML=`<div class="modal-box"><h2 id="dlgTitle">${escape(title)}</h2><div class="modal-body" id="dlgBody">${html}</div></div>`;
+ el.hidden=false;document.body.classList.add('locked');(el.querySelector('[data-first]')||el.querySelector('button,textarea,input'))?.focus({preventScroll:true});
+ return new Promise(r=>{dlgResolve=r})}
+function closeDialog(v){const el=$('#dialog');if(el.hidden)return;el.hidden=true;el.innerHTML='';if($('#rudOverlay').hidden)document.body.classList.remove('locked');
+ const r=dlgResolve,back=dlgReturn&&document.contains(dlgReturn)?dlgReturn:dlgReturnKey?document.querySelector(dlgReturnKey):null;dlgResolve=dlgReturn=dlgReturnKey=null;back?.focus({preventScroll:true});if(r)r(v)}
+/* Yes/no question. Resolves true only when the action button is pressed; Cancel, Escape and a tap outside resolve false. */
+function ask(message,okLabel,title='Are you sure?'){return dialog(title,`<p>${escape(message)}</p><div class="modal-actions"><button class="btn" data-dlg="cancel" data-first>Cancel</button><button class="btn danger" data-dlg="ok">${escape(okLabel)}</button></div>`,{alert:true}).then(v=>v==='ok')}
+
+/* ---------- Evidence report (F2) ---------- */
+/* One source for the on-screen report and its plain-text copy (P3). */
+function reportData(){const today=localDate();if(!reportTo)reportTo=today;if(!reportFrom){const first=[...state.sessions.map(s=>s.date),...state.tempos.map(t=>t.date)].filter(Boolean).sort()[0];reportFrom=first||localDate(addDays(new Date(),-30))}
+ const inRange=s=>s.date>=reportFrom&&s.date<=reportTo;const sessions=[...state.sessions].filter(inRange).sort((a,b)=>String(a.date).localeCompare(String(b.date))||String(a.savedAt||'').localeCompare(String(b.savedAt||'')));
+ const st=skillStats(),progress=state.rudimentChecks||{},rDone=RUDIMENTS.map((n,i)=>({n:i+1,name:n,r:progress[i+1]})).filter(x=>x.r?.done);const minsTotal=sessions.reduce((s,x)=>s+Number(x.minutes||0),0);
+ const tempos=state.tempos.filter(inRange).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+ const itemName=k=>k.startsWith('skill:')?(SKILLS.find(s=>s.id===k.slice(6))?.title||k):k.startsWith('rud:')?`${k.slice(4)}. ${rudName(+k.slice(4))||''}`:k;
+ return {today,sessions,st,rDone,minsTotal,tempos,itemName}}
+function reportTitle(){const c=studentCode();return c?`${c}: percussion technique evidence`:'Percussion technique evidence'}
+function reportText(){const {today,sessions,st,rDone,minsTotal,tempos,itemName}=reportData(),L=[];const h=t=>L.push('',t.toUpperCase(),'-'.repeat(t.length));
+ L.push(reportTitle(),'RBSC · Music Extension · HSC 2027',`${fmtDate(reportFrom)} to ${fmtDate(reportTo)} · generated ${fmtDate(today)}${state.teacher?` · teacher ${state.teacher}`:''}`,'',`${sessions.length} sessions in this period · ${minsTotal} minutes logged`,`${st.consistent} / ${st.total} skills Consistent or Applied · ${st.verified} teacher-verified`,`${lessonsComplete()} / 8 pathway lessons complete · ${rDone.length} / 40 rudiments demonstrated`);
+ h('Technique skills');for(const sd of STRANDS){L.push('',sd.name);for(const s of SKILLS.filter(x=>x.s===sd.id)){const a=skillData(s.id),b=bestTempo('skill:'+s.id);L.push(`  ${s.title}: ${LEVELS[a.level]||''}${b?` · best ${b} bpm`:''}${a.evidence?` · ${a.evidence}`:''}${a.verified?` · verified ${a.initials||''} ${fmtDate(a.verifiedAt||'')}`:''}`)}}
+ h('8-lesson pathway');LESSONS.forEach((l,i)=>{const a=lessonData(i),done=a.checks.length===l.tasks.length;L.push(`${i+1}. ${l.name}: ${a.checks.length} of ${l.tasks.length} tasks done${done&&a.date?` · completed ${fmtDate(a.date)}`:''}`)});
+ h(`Rudiments demonstrated (${rDone.length} of 40)`);if(rDone.length)for(const x of rDone){const b=bestTempo('rud:'+x.n);L.push(`${x.n}. ${x.name}${x.r.date?` · ${fmtDate(x.r.date)}`:''}${b?` · best ${b} bpm`:''}`)}else L.push('None ticked yet.');
+ h('Tempo log');if(tempos.length)for(const t of tempos)L.push(`${fmtDate(t.date)} · ${itemName(t.item)} · ${t.bpm} bpm`);else L.push('No tempos logged in this period.');
+ h('Goals');if(state.goals.length)for(const g of state.goals)L.push(`${g.done?'[x]':'[ ]'} ${g.text}${g.due?` · target ${fmtDate(g.due)}`:''}${g.done&&g.completedAt?` · completed ${fmtDate(g.completedAt)}`:''}`);else L.push('No goals set.');
+ h('Practice journal');if(sessions.length)for(const s of sessions){L.push('',`${fmtDate(s.date)} · ${s.focus||'Technique practice'} · ${mins(s)}`,`  Warm-up: ${(s.checks||[]).map(c=>WARMUP.find(w=>w.id===c)?.name||c).join(', ')||'Not recorded'}`);for(const [k,label] of [['heard','Hear'],['worked','Do'],['next','Write'],['evidence','Evidence']])if(s[k])L.push(`  ${label}: ${s[k]}`)}else L.push('No sessions in this period.');
+ return L.join('\n')}
+/* P3: sandboxed viewers block window.print(), so a framed copy shows where printing does work, and offers the report as text. */
+function framed(){try{return window.self!==window.top}catch(e){return true}}
+function printReport(){if(!framed()){try{window.print();return}catch(e){}}
+ dialog('Printing works from the website copy',`<p id="printNotice">This viewer blocks printing and saving as PDF.</p>${PAGES_URL?`<p>Open the website copy and print from there:<br><a id="pagesLink" href="${escape(PAGES_URL)}" target="_blank" rel="noopener">${escape(PAGES_URL)}</a></p>`:'<p id="pagesLink">The address of the website copy will be shown here once it is set up. Ask your teacher for it.</p>'}<p class="note">Progress is saved separately in each place. To print from the website copy, bring your progress across first: Copy backup here, then Import backup there.</p><p>Or copy this report as plain text and paste it into a document or an email.</p><div class="modal-actions"><button class="btn" data-action="copy-backup">Copy backup</button><button class="btn" data-dlg="close">Close</button><button class="btn primary" data-action="copy-report" data-first>Copy report as text</button></div>`)}
+function renderReport(){const {today,sessions,st,rDone,minsTotal,tempos,itemName}=reportData();
+ $('#panel-report').innerHTML=pageHead('For the Performance Notebook','Evidence report','Skills, pathway, rudiments, tempos and the full practice journal on one printable page. Choose the dates, then print or save as PDF.')+
+ `<div class="card report-controls"><div class="field"><label for="reportFrom">From</label><input type="date" id="reportFrom" value="${escape(reportFrom)}"></div><div class="field"><label for="reportTo">To</label><input type="date" id="reportTo" value="${escape(reportTo)}"></div><button class="btn teal" data-action="print">Print or save as PDF</button><button class="btn" data-action="copy-report">Copy report as text</button><button class="btn" data-go="goals">Back to journal</button></div>
+ <article class="report"><header class="report-title"><div class="eyebrow">RBSC · Music Extension · HSC 2027</div><h2>${escape(reportTitle())}</h2><div class="muted">${escape(fmtDate(reportFrom))} to ${escape(fmtDate(reportTo))} · generated ${escape(fmtDate(today))}${state.teacher?` · teacher ${escape(state.teacher)}`:''}</div>
+ <div class="report-facts"><div><b>${sessions.length}</b><span class="small">sessions in this period</span></div><div><b>${minsTotal}</b><span class="small">minutes logged</span></div><div><b>${st.consistent} / ${st.total}</b><span class="small">skills Consistent or Applied</span></div><div><b>${st.verified}</b><span class="small">skills teacher-verified</span></div><div><b>${lessonsComplete()} / 8</b><span class="small">pathway lessons complete</span></div><div><b>${rDone.length} / 40</b><span class="small">rudiments demonstrated</span></div></div></header>
+ <h2>Technique skills</h2><table><thead><tr><th>Skill</th><th>Level</th><th>Best tempo · evidence</th><th>Teacher sign-off</th></tr></thead><tbody>${STRANDS.map(sd=>`<tr><td colspan="4"><strong>${escape(sd.name)}</strong></td></tr>`+SKILLS.filter(s=>s.s===sd.id).map(s=>{const a=skillData(s.id),b=bestTempo('skill:'+s.id);return `<tr><td>${escape(s.title)}</td><td>${escape(LEVELS[a.level]||'')}</td><td>${[b?b+' bpm':'',escape(a.evidence||'')].filter(Boolean).join(' · ')||'—'}</td><td>${a.verified?`${escape(a.initials||'')} · ${escape(fmtDate(a.verifiedAt||''))}`:'—'}</td></tr>`}).join('')).join('')}</tbody></table>
+ <h2>8-lesson pathway</h2><table><thead><tr><th>Lesson</th><th>Tasks done</th><th>Completed</th></tr></thead><tbody>${LESSONS.map((l,i)=>{const a=lessonData(i);return `<tr><td>${i+1}. ${escape(l.name)}</td><td>${a.checks.length} of ${l.tasks.length}</td><td>${a.checks.length===l.tasks.length?escape(fmtDate(a.date||'')):'—'}</td></tr>`}).join('')}</tbody></table>
+ <h2>Rudiments demonstrated (${rDone.length} of 40)</h2>${rDone.length?`<ul class="report-list">${rDone.map(x=>{const b=bestTempo('rud:'+x.n);return `<li>${x.n}. ${escape(x.name)} · ${escape(fmtDate(x.r.date||''))}${b?` · best ${b} bpm`:''}</li>`}).join('')}</ul>`:'<p class="muted">None ticked yet.</p>'}
+ <h2>Tempo log</h2>${tempos.length?`<table><thead><tr><th>Date</th><th>Skill or rudiment</th><th>Tempo</th></tr></thead><tbody>${tempos.map(t=>`<tr><td>${escape(fmtDate(t.date))}</td><td>${escape(itemName(t.item))}</td><td>${t.bpm} bpm</td></tr>`).join('')}</tbody></table>`:'<p class="muted">No tempos logged in this period.</p>'}
+ <h2>Goals</h2>${state.goals.length?`<table><thead><tr><th>Goal</th><th>Target</th><th>Status</th></tr></thead><tbody>${state.goals.map(g=>`<tr><td>${escape(g.text)}</td><td>${g.due?escape(fmtDate(g.due)):'—'}</td><td>${g.done?'Completed'+(g.completedAt?' '+escape(fmtDate(g.completedAt)):''):'In progress'}</td></tr>`).join('')}</tbody></table>`:'<p class="muted">No goals set.</p>'}
+ <h2>Practice journal</h2>${sessions.length?sessions.map(s=>`<div class="report-entry"><p><strong>${escape(fmtDate(s.date))}</strong> · ${escape(s.focus||'Technique practice')} · ${mins(s)}</p><p><strong>Warm-up:</strong> ${(s.checks||[]).map(c=>escape(WARMUP.find(w=>w.id===c)?.name||c)).join(', ')||'Not recorded'}</p>${s.heard?`<p><strong>Hear:</strong> ${escape(s.heard)}</p>`:''}${s.worked?`<p><strong>Do:</strong> ${escape(s.worked)}</p>`:''}${s.next?`<p><strong>Write:</strong> ${escape(s.next)}</p>`:''}${s.evidence?`<p><strong>Evidence:</strong> ${escape(s.evidence)}</p>`:''}</div>`).join(''):'<p class="muted">No sessions in this period.</p>'}
+ </article>`;
+}
+
+/* ---------- Metronome (F7) ---------- */
+const Metro=(()=>{const PATTERNS=[
+ {id:'1',name:'Beat only',sub:1},{id:'2',name:'Quavers (2)',sub:2},{id:'3',name:'Triplets (3)',sub:3},{id:'4',name:'Semiquavers (4)',sub:4},{id:'5',name:'Quintuplets (5)',sub:5},{id:'6',name:'Sextuplets (6)',sub:6},{id:'7',name:'Septuplets (7)',sub:7},
+ {id:'332',name:'3+3+2',sub:2,groups:[3,3,2]},{id:'323',name:'3+2+3',sub:2,groups:[3,2,3]},{id:'233',name:'2+3+3',sub:2,groups:[2,3,3]},
+ {id:'556',name:'5+5+6',sub:4,groups:[5,5,6]},{id:'565',name:'5+6+5',sub:4,groups:[5,6,5]},{id:'655',name:'6+5+5',sub:4,groups:[6,5,5]},
+ {id:'772',name:'7+7+2',sub:4,groups:[7,7,2]},{id:'727',name:'7+2+7',sub:4,groups:[7,2,7]},{id:'277',name:'2+7+7',sub:4,groups:[2,7,7]}];
+ let saved={};try{saved=JSON.parse(localStorage.getItem(METRO_KEY))||{}}catch(e){}
+ let bpm=Math.min(240,Math.max(30,Number(saved.bpm)||72)),pid=PATTERNS.some(p=>p.id===saved.p)?saved.p:'332';
+ let ctx=null,timer=null,nextTime=0,step=0,queue=[],raf=0,lit=-1,node=null;
+ const pat=()=>PATTERNS.find(p=>p.id===pid);
+ const len=p=>p.groups?p.groups.reduce((a,b)=>a+b,0):p.sub*4;
+ const starts=p=>{if(!p.groups)return new Set([0]);const s=new Set();let k=0;for(const g of p.groups){s.add(k);k+=g}return s};
+ const kind=(p,i)=>i===0?'bar':p.groups?(starts(p).has(i)?'acc':i%p.sub===0?'beat':'sub'):(i%p.sub===0?'beat':'sub');
+ function persist(){try{localStorage.setItem(METRO_KEY,JSON.stringify({bpm,p:pid}))}catch(e){}}
+ function click(t,k){const o=ctx.createOscillator(),g=ctx.createGain();o.frequency.value=k==='bar'?2350:k==='acc'?1760:k==='beat'?1175:820;const v=k==='bar'?1:k==='acc'?.85:k==='beat'?.55:.22;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+.045);o.connect(g).connect(ctx.destination);o.start(t);o.stop(t+.05)}
+ function schedule(){const p=pat(),L=len(p),dur=60/bpm/p.sub;while(nextTime<ctx.currentTime+.12){const i=step%L;click(nextTime,kind(p,i));queue.push({t:nextTime,i});nextTime+=dur;step++}}
+ function draw(){if(!ctx)return;while(queue.length&&queue[0].t<=ctx.currentTime){const {i}=queue.shift();light(i)}raf=requestAnimationFrame(draw)}
+ function light(i){const cells=node.querySelectorAll('.metro-grid i');if(cells[lit])cells[lit].classList.remove('on');if(cells[i])cells[i].classList.add('on');lit=i}
+ function grid(){const p=pat(),s=starts(p);let html='';for(let i=0;i<len(p);i++){const k=kind(p,i);html+=`<i class="${k==='acc'||k==='bar'?'acc':''} ${k==='bar'?'bar':''} ${i%p.sub===0?'beat':''} ${p.groups&&s.has(i)&&i?'gs':''}"></i>`}node.querySelector('.metro-grid').innerHTML=html;lit=-1}
+ function summary(){node.querySelector('#metroSummary').textContent=`♩ = ${bpm} · ${pat().name}${running()?' · playing':''}`}
+ const running=()=>!!timer;
+ function start(){const AC=window.AudioContext||window.webkitAudioContext;if(!AC){toast('This browser cannot play the metronome.');return}ctx=ctx||new AC();ctx.resume();step=0;queue=[];nextTime=ctx.currentTime+.08;schedule();timer=setInterval(schedule,25);cancelAnimationFrame(raf);raf=requestAnimationFrame(draw);ui()}
+ function stop(){clearInterval(timer);timer=null;queue=[];cancelAnimationFrame(raf);light(-1);ui()}
+ function ui(){const b=node.querySelector('#metroToggle');b.textContent=running()?'Stop':'Start';b.setAttribute('aria-pressed',running());summary();floatUi()}
+ function floatUi(){const f=$('#metroFloat');f.hidden=!(running()&&tab!=='today');f.querySelector('span').textContent=`Metronome on · ♩ = ${bpm}`}
+ function setBpm(v,keepField){v=Math.round(Number(v));if(!Number.isFinite(v))return;bpm=Math.min(240,Math.max(30,v));if(!keepField)node.querySelector('#metroBpm').value=bpm;node.querySelector('#metroRange').value=bpm;persist();summary()}
+ function build(){node=document.createElement('details');node.className='metro';node.dataset.key='metro';
+  const opt=list=>list.map(p=>`<option value="${p.id}" ${p.id===pid?'selected':''}>${p.name}</option>`).join('');
+  node.innerHTML=`<summary><span>Metronome</span><span class="note" id="metroSummary"></span></summary><div class="metro-body"><div class="metro-controls"><div class="field"><label for="metroBpm">Tempo (crotchet beats per minute)</label><div class="metro-bpm"><button class="btn small" data-metro-nudge="-5" aria-label="5 bpm slower">−5</button><input id="metroBpm" type="number" inputmode="numeric" min="30" max="240" value="${bpm}"><button class="btn small" data-metro-nudge="5" aria-label="5 bpm faster">+5</button></div><input id="metroRange" type="range" min="30" max="240" value="${bpm}" aria-label="Tempo slider"></div><div class="field"><label for="metroPattern">Pattern</label><select id="metroPattern"><optgroup label="Subdivision">${opt(PATTERNS.filter(p=>!p.groups))}</optgroup><optgroup label="Rhythm Diamonds: quavers">${opt(PATTERNS.filter(p=>p.groups&&p.sub===2))}</optgroup><optgroup label="Rhythm Diamonds: semiquavers">${opt(PATTERNS.filter(p=>p.groups&&p.sub===4))}</optgroup></select></div></div><div class="metro-grid" aria-hidden="true"></div><button class="btn teal" id="metroToggle" aria-pressed="false">Start</button><p class="note" style="margin:0">Orange tops mark group starts; the first cell (the bar's downbeat) has the highest click. The beat underneath stays steady. One cycle is one 4/4 bar.</p></div>`;
+  node.addEventListener('click',e=>{const n=e.target.closest('[data-metro-nudge]');if(n){setBpm(bpm+Number(n.dataset.metroNudge));return}if(e.target.closest('#metroToggle'))running()?stop():start()});
+  node.addEventListener('input',e=>{if(e.target.id==='metroRange')setBpm(e.target.value);if(e.target.id==='metroBpm'){const v=Math.round(Number(e.target.value));if(v>=30&&v<=240)setBpm(v,true)}});
+  node.addEventListener('change',e=>{if(e.target.id==='metroBpm')setBpm(e.target.value);if(e.target.id==='metroPattern'){pid=e.target.value;persist();grid();if(running()){step=0;queue=[];nextTime=ctx.currentTime+.08}summary()}});
+  grid();summary()}
+ return {node(){if(!node)build();return node},stop,floatUi:()=>node&&floatUi()}})();
+
+/* ---------- rendering with focus and scroll kept (C17) ---------- */
+function showTab(target){if(!document.getElementById('panel-'+target))target='today';tab=target;closeOverlays();for(const name of ['today','skills','pathway','goals','rudiment-ref','report'])$(`#panel-${name}`).hidden=name!==target;document.body.classList.toggle('on-report',target==='report');document.querySelectorAll('[data-nav]').forEach(b=>{const on=b.dataset.nav===target;b.classList.toggle('active',on);if(on)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});render();Metro.floatUi();window.scrollTo({top:0,behavior:'instant'})}
+function render(){if(tab==='today')renderToday();if(tab==='skills')renderSkills();if(tab==='pathway')renderPathway();if(tab==='goals')renderGoals();if(tab==='rudiment-ref')renderRudiments();if(tab==='report')renderReport();applyIdentity()}
+function focusKey(el){if(!el||el===document.body||!document.contains(el))return null;if(el.id)return '#'+CSS.escape(el.id);const attrs=[...el.attributes].filter(a=>a.name.startsWith('data-'));return attrs.length?el.tagName.toLowerCase()+attrs.map(a=>`[${a.name}="${CSS.escape(a.value)}"]`).join(''):null}
+function rerender(){const a=document.activeElement,key=focusKey(a);let sel=null;try{if(a&&typeof a.selectionStart==='number')sel=[a.selectionStart,a.selectionEnd]}catch(e){}
+ const open={};document.querySelectorAll('details[data-key]').forEach(d=>open[d.dataset.key]=d.open);const y=window.scrollY;
+ const typed={};document.querySelectorAll('#newGoal,#goalDue,[data-tempo-input]').forEach(el=>{if(el.value)typed[focusKey(el)]=el.value});
+ render();if(rudOpen)openRudiment(rudOpen,true);document.querySelectorAll('details[data-key]').forEach(d=>{if(d.dataset.key in open)d.open=open[d.dataset.key]});
+ for(const [k,v] of Object.entries(typed)){const el=document.querySelector(k);if(el&&!el.value)el.value=v}
+ if(key){const scope=rudOpen?$('#rudOverlay'):document;const el=scope.querySelector(key)||document.querySelector(key);if(el){el.focus({preventScroll:true});if(sel)try{el.setSelectionRange(sel[0],sel[1])}catch(e){}}}
+ window.scrollTo(0,y)}
+
+/* ---------- actions ---------- */
+function checkDraftDate(){const d=state.draft;if(d.date!==localDate()&&!d.datePicked&&draftEmpty(d)){mutate(s=>{s.draft=freshDraft()});return true}return false}
+function saveSession(){refresh();const d=state.draft;if(!/^\d{4}-\d{2}-\d{2}$/.test(d.date||'')){toast('Choose a valid session date.');return}if(d.date>localDate()){toast('The session date is in the future. Choose today or an earlier day.');return}const min=Number(d.minutes||0);if(!Number.isFinite(min)||min<0||min>600){toast('Minutes must be between 0 and 600.');return}if(draftEmpty(d)){toast('Tick a warm-up strand or add a practice note first.');return}
+ const ok=mutate(s=>{const {datePicked,...rec}=s.draft;s.sessions.unshift({...rec,id:'session-'+Date.now()+'-'+Math.random().toString(36).slice(2,6),minutes:Number(rec.minutes||0),savedAt:new Date().toISOString()});s.draft=freshDraft()});staleDraftDismissed=false;rerender();toast(ok?`Session for ${fmtDate(d.date)} saved to your journal.`:'This browser refused to save. Export your progress now so nothing is lost.')}
+function logTempo(key){const input=document.querySelector(`[data-tempo-input="${CSS.escape(key)}"]`);const v=Math.round(Number(input?.value));if(!input||!input.value||!Number.isFinite(v)||v<20||v>400){toast('Enter a tempo between 20 and 400 bpm.');input?.focus();return}
+ mutate(s=>{s.tempos.push({id:'tempo-'+Date.now()+'-'+Math.random().toString(36).slice(2,6),item:key,bpm:v,date:localDate()})});rerender();toast(`${v} bpm logged.`);const again=document.querySelector(`[data-tempo-input="${CSS.escape(key)}"]`);if(again)again.focus({preventScroll:true})}
+/* P2: backup out. Sandboxed viewers block <a download>, so: ask the host for its downloads helper (only window.claude.use is ever read), fall back to a download link, and always offer Copy backup. */
+function backupJSON(){refresh();return JSON.stringify({...state,exportedAt:new Date().toISOString()},null,2)}
+function backupName(){const c=studentCode().replace(/[^A-Za-z0-9_-]+/g,'');return `${c?c+'_':''}Percussion_Progress_${localDate()}.json`}
+async function hostDownloads(){try{const p=window.claude?.use?.('downloads');if(!p)return null;return await Promise.race([p,new Promise(r=>setTimeout(()=>r(null),4000))])||null}catch(e){return null}}
+function linkDownload(filename,data){const url=URL.createObjectURL(new Blob([data],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+async function exportData(){const data=backupJSON(),filename=backupName();let msg;const d=await hostDownloads();
+ if(d&&typeof d.save==='function'){try{await d.save({filename,data});msg=`Backup saved as ${filename}.`}catch(e){msg='The backup file was not saved.'}}
+ else{try{linkDownload(filename,data);msg=`Download started: ${filename}.`}catch(e){msg='This browser would not start a download.'}}
+ dialog('Back up your progress',`<p id="exportStatus">${escape(msg)}</p><p class="note">No file? Some viewers block downloads. Use Copy backup instead, then paste the text into a note or an email to yourself. To restore it, choose Import backup and paste it back.</p><div class="modal-actions"><button class="btn" data-action="copy-backup">Copy backup</button><button class="btn primary" data-dlg="close" data-first>Done</button></div>`)}
+/* Copies from inside the click. If the browser refuses, shows the text selected in a read-only box instead. */
+async function copyText(text,what){let ok=false;try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(text);ok=true}}catch(e){}
+ if(ok){toast(`${what} copied. Paste it somewhere you can find it again.`);return}
+ dialog(`Copy the ${what.toLowerCase()}`,`<p>This browser would not copy it for you. The text below is selected: copy it (Ctrl+C or ⌘C, or touch and hold, then Copy) and paste it somewhere you can find it again.</p><textarea id="copyBox" class="modal-text" readonly aria-label="${escape(what)} text"></textarea><div class="modal-actions"><button class="btn" data-action="select-copy">Select all</button><button class="btn primary" data-dlg="close">Done</button></div>`);selectCopyBox(text)}
+function selectCopyBox(text){const t=$('#copyBox');if(!t)return;if(text!==undefined)t.value=text;t.focus({preventScroll:true});t.select();try{t.setSelectionRange(0,t.value.length)}catch(e){}t.scrollTop=0}
+function validImport(v){return validShape(v)&&(v.studentCode===undefined||typeof v.studentCode==='string')&&v.draft&&typeof v.draft==='object'&&(v.draft.checks===undefined||Array.isArray(v.draft.checks))&&v.sessions.every(x=>x&&typeof x==='object'&&typeof x.id==='string')&&v.goals.length<2000&&v.sessions.length<10000&&v.goals.every(g=>typeof g.id==='string'&&typeof g.text==='string'&&g.text.length<1000)&&validRudiments(v.rudimentChecks)&&validTempos(v.tempos)}
+function validRudiments(r){if(r===undefined)return true;if(!r||typeof r!=='object'||Array.isArray(r))return false;return Object.entries(r).every(([k,x])=>/^([1-9]|[1-3][0-9]|40)$/.test(k)&&x&&typeof x==='object'&&typeof x.done==='boolean'&&(x.date===undefined||typeof x.date==='string'))}
+function validTempo(x){return !!x&&typeof x.id==='string'&&typeof x.item==='string'&&/^(skill:[a-z]\d|rud:([1-9]|[1-3][0-9]|40))$/.test(x.item)&&Number.isFinite(x.bpm)&&x.bpm>=1&&x.bpm<=999&&typeof x.date==='string'}
+function validTempos(t){if(t===undefined)return true;return Array.isArray(t)&&t.length<20000&&t.every(validTempo)}
+/* P2: backup in, from a file or from pasted text. */
+function importDialog(text=''){dialog('Import a backup',`<p>Importing <strong>replaces</strong> the progress in this browser. You will be asked to confirm before anything changes.</p><div class="modal-actions" style="justify-content:flex-start"><button class="btn" data-action="import-file" data-first>Choose a backup file</button></div><div class="field"><label for="importText">Or paste the backup text here</label><textarea id="importText" class="modal-text" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="Paste everything, from the first { to the last }"></textarea></div><div class="modal-actions"><button class="btn" data-dlg="cancel">Cancel</button><button class="btn primary" data-action="import-paste">Import pasted backup</button></div>`);if(text)$('#importText').value=text}
+async function importText(text,pasted){if(text.length>3e6){toast('Import rejected: the backup is over 3 MB.');return}let incoming;try{incoming=JSON.parse(text)}catch(e){toast(pasted?'That text is not a complete backup. Copy all of it, from the first { to the last }.':'Could not read that JSON backup.');return}
+ if(!validImport(incoming)){toast('Not a valid Percussion Technique Lab backup.');return}
+ if(!await ask('Replace all progress in this browser with the imported backup?','Replace progress','Import backup')){if(pasted)importDialog(text);return}
+ const {exportedAt,...rest}=incoming;state=normalise(rest);reportFrom='';reportTo='';const ok=store();checkDraftDate();showTab('today');if(ok)toast(`Imported: ${state.sessions.length} sessions, ${Object.keys(state.skills).length} skills, ${Object.values(state.rudimentChecks).filter(r=>r.done).length} rudiments.`)}
+async function importData(file){if(!file)return;if(file.size>3e6){toast('Import rejected: file is over 3 MB.');return}let text;try{text=await file.text()}catch(e){toast('Could not read that file.');return}await importText(text,false)}
+
+document.addEventListener('click',e=>{
+ const dl=e.target.closest('[data-dlg]');if(dl){closeDialog(dl.dataset.dlg);return}
+ if(e.target.id==='dialog'){closeDialog('');return}
+ const nav=e.target.closest('[data-nav]');if(nav){showTab(nav.dataset.nav);return}
+ const go=e.target.closest('[data-go]');if(go){showTab(go.dataset.go);return}
+ const filter=e.target.closest('[data-filter]');if(filter){skillFilter=filter.dataset.filter;rerender();return}
+ const vf=e.target.closest('[data-rud-filter]');if(vf){rudimentFilter=vf.dataset.rudFilter;updateRudiments();return}
+ const ro=e.target.closest('[data-rud-open]');if(ro){lastFocus=ro;openRudiment(Number(ro.dataset.rudOpen));return}
+ const rs=e.target.closest('[data-rud-step]');if(rs){const n=rudOpen+Number(rs.dataset.rudStep);if(n>=1&&n<=40){openRudiment(n,true);const b=$(`#rudOverlay [data-rud-step="${rs.dataset.rudStep}"]`);(b&&!b.disabled?b:$('#rudOverlay [data-action=overlay-close]')).focus({preventScroll:true})}return}
+ /* C13 / D2: moving up keeps the teacher's sign-off; moving down removes it, with a notice. */
+ const lv=e.target.closest('[data-skill][data-level]');if(lv){const id=lv.dataset.skill,n=Number(lv.dataset.level);let msg='';mutate(s=>{const p={level:0,verified:false,evidence:'',...(s.skills[id]||{})};if(n===p.level)return;const clear=n<p.level&&p.verified;s.skills[id]={...p,level:n,...(clear?{verified:false,verifiedAt:'',initials:''}:{})};if(clear)msg='Teacher sign-off removed because the level moved down. Your teacher can verify it again.'});rerender();if(msg)toast(msg);return}
+ const ta=e.target.closest('[data-tempo-add]');if(ta){logTempo(ta.dataset.tempoAdd);return}
+ const td=e.target.closest('[data-tempo-del]');if(td){const id=td.dataset.tempoDel;ask('Remove this tempo entry?','Remove','Remove tempo').then(ok=>{if(!ok)return;const key=state.tempos.find(t=>t.id===id)?.item;mutate(s=>{s.tempos=s.tempos.filter(t=>t.id!==id)});rerender();(document.querySelector(`[data-tempo-input="${CSS.escape(key||'')}"]`))?.focus({preventScroll:true})});return}
+ const delg=e.target.closest('[data-goal-delete]');if(delg){const id=delg.dataset.goalDelete;ask('Remove this goal?','Remove','Remove goal').then(ok=>{if(!ok)return;mutate(s=>{s.goals=s.goals.filter(g=>g.id!==id)});rerender();$('#newGoal')?.focus({preventScroll:true})});return}
+ const dels=e.target.closest('[data-session-delete]');if(dels){const id=dels.dataset.sessionDelete;ask('Delete this journal entry? This cannot be undone.','Delete entry','Delete journal entry').then(ok=>{if(!ok)return;mutate(s=>{s.sessions=s.sessions.filter(x=>x.id!==id)});rerender();($('#panel-goals .history-item summary')||$('#panel-goals h2'))?.focus({preventScroll:true})});return}
+ const act=e.target.closest('[data-action]');if(act){const a=act.dataset.action;
+  if(a==='save-session')saveSession();if(a==='export')exportData();if(a==='copy-backup')copyText(backupJSON(),'Backup');if(a==='select-copy')selectCopyBox();
+  if(a==='import')importDialog();if(a==='import-file'){closeDialog('');$('#importFile').click()}
+  if(a==='import-paste'){const t=$('#importText'),v=t.value.trim();if(!v){toast('Paste the backup text into the box first.');t.focus()}else importText(v,true)}
+  if(a==='print')printReport();if(a==='copy-report')copyText(reportText(),'Report');
+  if(a==='draft-keep'){staleDraftDismissed=true;rerender();$('#sessionWorked')?.focus({preventScroll:true})}
+  if(a==='draft-today'){ask(`Clear the unsaved draft from ${fmtDate(state.draft.date)}? Its notes will be lost.`,'Clear draft','Clear draft').then(ok=>{if(!ok)return;mutate(s=>{s.draft=freshDraft()});rerender();toast('Started a fresh session for today.');$('#sessionFocus')?.focus({preventScroll:true})})}
+  if(a==='metro-stop')Metro.stop();if(a==='overlay-close')closeOverlays();
+  return}
+ if(e.target.classList?.contains('overlay'))closeOverlays()});
+document.addEventListener('change',e=>{const t=e.target;
+ if(t.matches('[data-rud-check]')){const n=Number(t.dataset.rudCheck),on=t.checked;mutate(s=>{s.rudimentChecks=s.rudimentChecks||{};s.rudimentChecks[n]={done:on,date:on?localDate():''}});if(tab==='rudiment-ref')updateRudiments();if(rudOpen)openRudiment(rudOpen,true);const back=(rudOpen?$('#rudOverlay'):document).querySelector(`[data-rud-check="${n}"]`)||$('#rudGrid .rud-open')||$('#rudimentSearch');back?.focus({preventScroll:true});return}
+ if(t.matches('[data-warm]')){const k=t.dataset.warm,on=t.checked;mutate(s=>{s.draft.checks=on?[...new Set([...s.draft.checks,k])]:s.draft.checks.filter(c=>c!==k)});rerender();return}
+ if(t.matches('[data-draft]')){const k=t.dataset.draft,v=t.value;mutate(s=>{s.draft[k]=v;if(k==='date')s.draft.datePicked=v!==localDate()});if(k==='date')rerender();return}
+ if(t.matches('[data-verify]')){const id=t.dataset.verify;refresh();const p=skillData(id);if(t.checked&&(p.level<2||!String(state.teacher||'').trim())){t.checked=false;toast(p.level<2?'Set this skill to Consistent or Applied first.':'Enter teacher initials before verifying.');return}const on=t.checked;mutate(s=>{const q={level:0,verified:false,evidence:'',...(s.skills[id]||{})};s.skills[id]={...q,verified:on,verifiedAt:on?localDate():'',initials:on?String(s.teacher||'').trim():''}});rerender();return}
+ if(t.matches('[data-lesson-task]')){const i=Number(t.dataset.lesson),j=Number(t.dataset.lessonTask),on=t.checked;mutate(s=>{const p={checks:[],note:'',verified:false,date:'',...(s.lessons[i]||{})};const checks=on?[...new Set([...p.checks,j])]:p.checks.filter(x=>x!==j),complete=checks.length===LESSONS[i].tasks.length;s.lessons[i]={...p,checks,date:complete?(p.date||localDate()):''}});rerender();return}
+ if(t.matches('[data-goal-check]')){const id=t.dataset.goalCheck,on=t.checked;mutate(s=>{const g=s.goals.find(g=>g.id===id);if(g){g.done=on;g.completedAt=on?localDate():''}});rerender();return}
+ if(t.id==='teacherInitials'){const v=t.value.trim().slice(0,12);mutate(s=>{s.teacher=v});return}
+ if(t.id==='reportFrom'||t.id==='reportTo'){if(t.id==='reportFrom')reportFrom=t.value;else reportTo=t.value;if(reportFrom&&reportTo&&reportFrom>reportTo){toast('The From date is after the To date.')}rerender();return}
+ if(t.id==='importFile'){importData(t.files?.[0]);t.value='';return}});
+document.addEventListener('input',e=>{const t=e.target;
+ if(t.id==='rudimentSearch'){updateRudiments();return}
+ if(t.matches('[data-draft]')){const k=t.dataset.draft,v=t.value;mutate(s=>{s.draft[k]=v;if(k==='date')s.draft.datePicked=v!==localDate()});return}
+ /* C15: evidence notes save on every keystroke */
+ if(t.matches('[data-skill-note]')){const id=t.dataset.skillNote,v=t.value;mutate(s=>{s.skills[id]={level:0,verified:false,evidence:'',...(s.skills[id]||{}),evidence:v}});return}
+ if(t.id==='studentCode'){const v=t.value.slice(0,12);mutate(s=>{s.studentCode=v});applyIdentity();return}
+ if(t.id==='teacherInitials'){const v=t.value.slice(0,12);mutate(s=>{s.teacher=v})}});
+document.addEventListener('keydown',e=>{if(e.key==='Tab'){const ov=[$('#dialog'),$('#rudOverlay')].find(o=>!o.hidden);if(ov){const f=[...ov.querySelectorAll('button:not([disabled]),input,select,textarea,summary,a[href],[tabindex]')].filter(x=>x.offsetParent!==null);if(f.length){const first=f[0],last=f[f.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}else if(!ov.contains(document.activeElement)){e.preventDefault();first.focus()}}}}if(e.key==='Escape'&&!$('#dialog').hidden){closeDialog('');return}if(e.key==='Escape'&&!$('#rudOverlay').hidden){closeOverlays();return}if(e.key==='Enter'&&e.target.matches?.('[data-tempo-input]')){e.preventDefault();logTempo(e.target.dataset.tempoInput)}});
+document.addEventListener('submit',e=>{if(e.target.id!=='goalForm')return;e.preventDefault();const text=$('#newGoal').value.trim(),due=$('#goalDue').value;if(!text)return;mutate(s=>{s.goals.push({id:'goal-'+Date.now(),text:text.slice(0,250),due,done:false,completedAt:''})});rerender();$('#newGoal')?.focus();toast('New goal added.')});
+/* C14: another tab or window changed the data, so show it here. */
+window.addEventListener('storage',e=>{if(e.key!==STORAGE)return;refresh();rerender()});
+/* C12: a page left open overnight moves an empty draft to the new day. */
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){refresh();checkDraftDate();rerender()}});
+/* C19: print journal entries in full. */
+let printOpened=[];window.addEventListener('beforeprint',()=>{printOpened=[...document.querySelectorAll('details:not([open])')].filter(d=>!d.classList.contains('metro'));printOpened.forEach(d=>d.open=true)});window.addEventListener('afterprint',()=>{printOpened.forEach(d=>d.open=false);printOpened=[]});
+WIDE.addEventListener?.('change',()=>{if(tab==='skills')render()});
+checkDraftDate();render();if(storageNotice)toast(storageNotice);
+})();
+</script>
+</body>
+</html>
