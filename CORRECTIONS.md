@@ -92,3 +92,11 @@ Aim: the app runs at full capacity wherever it is opened (a claude.ai artifact l
 Data shape: unchanged apart from the optional `studentCode` string. Regression suite after P1–P5: 126/126 passed with the real `notation.js` (headless Chrome: 1366 px, 390 px, 360 px, print media, and inside a cross-origin sandboxed iframe); 125/125 with `--stub` (the stub run skips the name-match check).
 
 Still open: P6 (new public repo with clean history, GitHub Pages, then set `PAGES_URL`). Not yet tried inside the real claude.ai artifact viewer; the suite stands in for it with a sandboxed iframe and a mock of the host's downloads helper.
+
+## 27 Nov 2026: background trace restored
+
+| # | Severity | Finding | Fix | Status |
+|---|---|---|---|---|
+| R1 | Design (Justin) | The C23 rebuild removed the page-background number diamond (the 2·3·3 / 3+3+2 trace). It is part of the Shmung design style, not template decoration. | Original `.page::before` trace restored exactly as in the ChatGPT baseline (600 px tile, 15% opacity; 470 px / 11% under 820 px; hidden in print). The working warm-up diamond on Today stays. New regression check. | Fixed |
+
+Regression suite: 127/127; notation 15/15.

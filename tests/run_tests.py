@@ -167,6 +167,7 @@ def main():
         pg.focus("[data-warm=rudiments]"); pg.keyboard.press("Space"); pg.wait_for_timeout(50)
         check("C17 focus stays on the ticked box", pg.evaluate("document.activeElement.dataset.warm") == "rudiments")
         check("F1 diamond fills ticked strand", pg.locator(".warm-diamond rect[fill='#b3ef66']").count() == 1)
+        check("Shmung number-diamond trace on page background", "data:image/svg+xml" in pg.evaluate("getComputedStyle(document.querySelector('.page'),'::before').backgroundImage"))
         check("F1 8-week practice strip", pg.locator(".week").count() == 8)
         # save
         pg.fill("#sessionWorked", "Notes"); pg.click("[data-action=save-session]")
