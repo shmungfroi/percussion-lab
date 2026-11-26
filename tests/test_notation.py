@@ -115,6 +115,11 @@ def main():
         col = pd.evaluate("getComputedStyle(document.querySelector('.card svg')).color")
         check("dark background: notation takes the text colour", col == pd.evaluate("getComputedStyle(document.body).color"), col)
         pd.screenshot(path=str(OUT / "preview_dark.png"), full_page=True)
+        # Spec V: the same check on the light (default) background.
+        pl = b.new_page(viewport={"width": 1200, "height": 900})
+        pl.goto(base); pl.wait_for_timeout(150)
+        col = pl.evaluate("getComputedStyle(document.querySelector('.card svg')).color")
+        check("light background: notation takes the text colour", col == pl.evaluate("getComputedStyle(document.body).color") and col != pd.evaluate("getComputedStyle(document.body).color"), col)
         b.close()
     httpd.shutdown()
     fails = [n for n, ok in results if not ok]
