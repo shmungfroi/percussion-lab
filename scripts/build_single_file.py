@@ -1,7 +1,7 @@
 """Build a self-contained copy of the app with the rudiment notation and the fonts built in.
 
 Usage:  python3 scripts/build_single_file.py
-Output: dist/Percussion_Technique_Lab.html  (one file, works offline)
+Output: dist/Percussion_Lab.html  (one file, works offline)
 
 The repo keeps the notation drawing code in notation.js so the app code stays
 small and easy to edit. Run this whenever a one-file copy is needed, for
@@ -31,7 +31,7 @@ def embed(m):
 html, n = re.subn(r"url\(fonts/([\w-]+\.ttf)\)", embed, html)
 if n != 3:
     raise SystemExit(f"Expected 3 font files in the @font-face rules, found {n}")
-out = root / "dist" / "Percussion_Technique_Lab.html"
+out = root / "dist" / "Percussion_Lab.html"
 out.parent.mkdir(exist_ok=True)
 out.write_text(html, encoding="utf-8")
 print(f"Wrote {out.relative_to(root)} ({out.stat().st_size / 1e3:.0f} KB)")

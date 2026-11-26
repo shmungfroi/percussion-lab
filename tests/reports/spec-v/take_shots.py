@@ -48,7 +48,7 @@ def main():
                     SKILLS = {i: {"level": (n * 7) % 4, "verified": n % 5 == 2 and (n * 7) % 4 >= 2, "evidence": ""} for n, i in enumerate(ids)}
                 pg.evaluate("([k,v])=>localStorage.setItem(k,v)", [T.KEY, json.dumps(state())]); pg.reload()
                 pg.evaluate("document.fonts.ready"); pg.wait_for_timeout(300)
-                for nav, name in (("today", "today"), ("skills", "technique"), ("rudiment-ref", "rudiments")):
+                for nav, name in (("today", "today"), ("skills", "technique"), ("pathway", "pathway"), ("rudiment-ref", "rudiments")):
                     pg.click(f"[data-nav={nav}]"); pg.wait_for_timeout(250)
                     f = SHOTS / f"percussion_{name}_{w}_{scheme}.png"; pg.screenshot(path=str(f), full_page=(w == 390 and False)); made.append(f)
                 if w == 1366:

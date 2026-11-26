@@ -22,7 +22,7 @@
     :root{
       --bg:#0b0906;--card:#12100b;--ink:#ece2c8;--ink2:#d9cfb6;--muted:#9c927c;--line:#2a2418;--line2:#5c5240;
       --gold:#c9a24a;--gold-hi:#f0d48a;--teal:#3fb6a8;--on-teal:#06211e;--danger:#e8806c;--orange:#e39a5c;
-      --paper:#ece2c8;--paper-ink:#17130c;
+      --paper:#ece2c8;--paper-ink:#17130c;--gold-display:#f0d48a;
       --s-diamonds:#3fb6a8;--s-subdivision:#c9a24a;--s-rudiments:#c98a5a;--s-independence:#a493d8;--s-mallets:#8fbf6a;
       --trace-op:.17;--trace-op-sm:.12;
       --text:'G Outfit',Outfit,system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -38,7 +38,7 @@
         --muted:light-dark(#6f634c,#9c927c);--line:light-dark(#d9cdb2,#2a2418);--line2:light-dark(#a8997a,#5c5240);
         --gold:light-dark(#8a6a22,#c9a24a);--gold-hi:light-dark(#7a5c12,#f0d48a);--teal:light-dark(#1b746b,#3fb6a8);--on-teal:light-dark(#fffaf0,#06211e);
         --danger:light-dark(#a8352b,#e8806c);--orange:light-dark(#b0601c,#e39a5c);
-        --paper:light-dark(#fffaf0,#ece2c8);--paper-ink:light-dark(#2a2216,#17130c);
+        --paper:light-dark(#fffaf0,#ece2c8);--paper-ink:light-dark(#2a2216,#17130c);--gold-display:light-dark(#5f4708,#f0d48a);
         --s-diamonds:light-dark(#1b746b,#3fb6a8);--s-subdivision:light-dark(#8a6a22,#c9a24a);--s-rudiments:light-dark(#96592c,#c98a5a);
         --s-independence:light-dark(#6b55b0,#a493d8);--s-mallets:light-dark(#4a7434,#8fbf6a);
       }
@@ -57,7 +57,7 @@
     a{color:var(--ink);text-decoration-color:var(--teal);text-underline-offset:3px}
     h1,h2,h3,p{margin-top:0}
     h1,h2{font-family:var(--display);font-weight:400;line-height:1.1;margin:0;font-synthesis:none}
-    h1{font-size:clamp(32px,3.2vw,44px);color:var(--gold-hi);margin-bottom:8px}
+    h1{font-size:clamp(32px,3.2vw,44px);color:var(--gold-display);margin-bottom:8px}
     h2{font-size:27px}
     h3{font:500 17px/1.3 var(--text);margin:0}
     p{margin-bottom:12px}
@@ -94,13 +94,13 @@
     .theme-switch button[aria-pressed=true]{color:var(--ink);background:color-mix(in srgb,var(--teal) 20%,transparent);box-shadow:inset 0 0 0 1px var(--teal)}
     .page{min-width:0;padding:30px clamp(18px,3.8vw,55px) 65px;position:relative;isolation:isolate}
     /* V6 (decision D7): the 2·3·3 number-diamond trace stays on the page background. Same geometry as before; family colours, one drawing per theme. */
-    .page::before{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;background-image:var(--trace-dark);background-size:600px 600px;background-repeat:repeat;opacity:var(--trace-op);background-position:190px 115px}
+    .page::before{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;background-image:var(--trace-dark);background-size:600px 600px;background-repeat:repeat;opacity:var(--trace-op);background-position:225px 390px}
     @supports (color:light-dark(#000,#fff)){
       @media (prefers-color-scheme:light){
-        :root:not([data-theme=dark]){--trace-op:.2;--trace-op-sm:.15}
+        :root:not([data-theme=dark]){--trace-op:.15;--trace-op-sm:.12}
         :root:not([data-theme=dark]) .page::before{background-image:var(--trace-light)}
       }
-      :root[data-theme=light]{--trace-op:.2;--trace-op-sm:.15}
+      :root[data-theme=light]{--trace-op:.15;--trace-op-sm:.12}
       :root[data-theme=light] .page::before{background-image:var(--trace-light)}
     }
     .topline{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--line)}
@@ -174,7 +174,14 @@
     .field input:focus,.field textarea:focus{border-color:var(--teal)}
     .span-all{grid-column:1/-1}
     .session-fields{display:grid;grid-template-columns:1fr 140px;gap:10px}
-    input[type=checkbox],input[type=range]{accent-color:var(--teal)}
+    input[type=range]{accent-color:var(--teal)}
+    /* W3: one checkbox for the whole app, both themes and print: card fill, rule-family border, teal fill with a tick when checked. */
+    input[type=checkbox]{-webkit-appearance:none;appearance:none;display:inline-grid;place-content:center;width:20px;height:20px;margin:0;flex-shrink:0;background:var(--card);border:1.5px solid var(--line2);border-radius:6px;cursor:pointer;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    input[type=checkbox]:hover{border-color:var(--teal)}
+    input[type=checkbox]::after{content:"";width:5px;height:10px;margin-top:-2px;border:solid var(--on-teal);border-width:0 2.5px 2.5px 0;transform:rotate(45deg) scale(0);transition:transform .12s}
+    input[type=checkbox]:checked{background:var(--teal);border-color:var(--teal)}
+    input[type=checkbox]:checked::after{transform:rotate(45deg) scale(1)}
+    input[type=checkbox]:disabled{opacity:.45;cursor:not-allowed}
     .check-row{display:flex;align-items:center;gap:11px;border:1px solid var(--line);padding:11px 13px;border-radius:12px;background:var(--bg);cursor:pointer;min-height:52px}
     .check-row:hover{border-color:var(--line2)}
     .check-row input{margin:0;flex-shrink:0;cursor:pointer}
@@ -249,6 +256,8 @@
     .levels button{min-height:44px;line-height:1.2;white-space:normal;padding:6px 3px;font-size:13px;border-radius:10px;background:var(--bg);color:var(--ink2);border:1px solid var(--line2)}
     .levels button:hover{border-color:var(--teal)}
     .levels button.selected,.levels button[aria-pressed=true]{background:var(--teal);color:var(--on-teal);border-color:var(--teal);font-weight:500}
+    /* W1: "Not started" selected is an outline, not a solid achievement fill. */
+    .levels button[data-level="0"].selected,.levels button[data-level="0"][aria-pressed=true]{background:transparent;color:var(--ink);border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal)}
     .verified-row{display:flex;align-items:center;justify-content:space-between;gap:7px;border-top:1px solid var(--line);padding-top:11px}
     .verified-row label{display:flex;align-items:center;gap:8px;color:var(--ink2);font-size:13px;cursor:pointer;min-height:44px}
     .skill-note{font-size:14px;min-height:44px}
@@ -273,7 +282,7 @@
     .lesson{padding:20px}
     .lesson.current{border-color:var(--teal);box-shadow:inset 3px 0 0 var(--teal)}
     .lesson-head{display:flex;gap:15px;align-items:start;margin-bottom:13px}
-    .lesson-number{width:45px;height:45px;display:grid;place-items:center;flex-shrink:0;font:400 28px/1 var(--display);color:var(--gold-hi);font-synthesis:none}
+    .lesson-number{width:45px;height:45px;display:grid;place-items:center;flex-shrink:0;font:400 28px/1 var(--text);font-variant-numeric:tabular-nums;color:var(--gold-display)}
     .lesson-desc{color:var(--muted);font-size:14px;margin:6px 0 0}
     .lesson-tasks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
     .lesson-tasks label{font-size:14px;display:flex;gap:9px;align-items:flex-start;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:11px;cursor:pointer;min-height:52px}
@@ -289,6 +298,7 @@
     .goal-sub{font-size:13px;color:var(--muted);margin-top:3px}
     .history-item{padding:4px 15px;border-radius:12px}
     .history-item details summary{cursor:pointer;font-weight:500;padding:12px 0;min-height:44px}
+    .history-item summary .note{white-space:nowrap}
     .history-item .details{border-top:1px solid var(--line);padding-top:11px;margin:0 0 10px;font-size:14px;color:var(--ink2)}
     .history-item .details p{margin-bottom:6px}
 
@@ -344,7 +354,7 @@
     .report{padding:26px 28px}
     .report h2{font-size:25px;margin:28px 0 10px}
     .report-title{border-bottom:2px solid var(--teal);padding-bottom:14px}
-    .report-title h2{margin:6px 0 4px;font-size:32px;color:var(--gold-hi)}
+    .report-title h2{margin:6px 0 4px;font-size:32px;color:var(--gold-display)}
     .report table{width:100%;border-collapse:collapse;font-size:14px}
     .report th,.report td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
     .report th{font-size:13px;font-weight:500;color:var(--muted)}
@@ -369,7 +379,7 @@
       .session-card>section+section{border-left:0;border-top:1px solid var(--line)}
     }
     @media(max-width:820px){
-      .page::before{background-size:470px 470px;opacity:var(--trace-op-sm)}
+      .page::before{background-size:470px 470px;opacity:var(--trace-op-sm);background-position:190px 115px}
       .rudiment-grid{grid-template-columns:1fr}
       .rudiment-tools{display:block}
       .rudiment-tools .field{max-width:none;margin-bottom:12px}
@@ -390,10 +400,11 @@
       .nav .full,.nav-count{display:none}
       .nav .short{display:inline}
       .page{padding:16px 14px 110px}
-      .topline{align-items:start;gap:10px;margin-bottom:15px}
+      .topline{flex-direction:column;align-items:stretch;gap:10px;margin-bottom:15px}
       .topline .ident{gap:5px}
       .topline .ident .pill:first-child{display:none}
-      .actions{justify-content:flex-end}
+      .actions{flex-wrap:nowrap;justify-content:flex-start}
+      .actions .btn{flex:1;padding-left:8px;padding-right:8px}
       .toast{top:12px;bottom:auto;left:12px;right:12px;max-width:none}
       .hero{padding:20px 18px}
       .page-head{margin-bottom:14px}
@@ -448,6 +459,7 @@
       .card,.lesson,.skill-card,.goal,.rudiment-item{break-inside:avoid}
       .skills-grid{grid-template-columns:repeat(2,1fr)}
       .levels button.selected,.levels button[aria-pressed=true]{background:#ddd!important;color:#111!important;font-weight:700}
+      .levels button[data-level="0"].selected,.levels button[data-level="0"][aria-pressed=true]{background:#fff!important;box-shadow:inset 0 0 0 1px #14574f}
       .progress{background:#ddd!important}
       .progress .bar{background:#14574f!important}
       .report{border:0!important;padding:0!important;background:#fff!important;color:#111!important}
@@ -780,7 +792,7 @@ function renderReport(){const {today,sessions,st,rDone,minsTotal,tempos,itemName
  `<div class="card report-controls"><div class="field"><label for="reportFrom">From</label><input type="date" id="reportFrom" value="${escape(reportFrom)}"></div><div class="field"><label for="reportTo">To</label><input type="date" id="reportTo" value="${escape(reportTo)}"></div><button class="btn teal" data-action="print">Print or save as PDF</button><button class="btn" data-action="copy-report">Copy report as text</button><button class="btn" data-go="goals">Back to journal</button></div>
  <article class="report"><header class="report-title"><div class="eyebrow">RBSC · Music Extension · HSC 2027</div><h2>${escape(reportTitle())}</h2><div class="muted">${escape(fmtDate(reportFrom))} to ${escape(fmtDate(reportTo))} · generated ${escape(fmtDate(today))}${state.teacher?` · teacher ${escape(state.teacher)}`:''}</div>
  <div class="report-facts"><div><b>${sessions.length}</b><span class="small">sessions in this period</span></div><div><b>${minsTotal}</b><span class="small">minutes logged</span></div><div><b>${st.consistent} / ${st.total}</b><span class="small">skills Consistent or Applied</span></div><div><b>${st.verified}</b><span class="small">skills teacher-verified</span></div><div><b>${lessonsComplete()} / 8</b><span class="small">pathway lessons complete</span></div><div><b>${rDone.length} / 40</b><span class="small">rudiments demonstrated</span></div></div></header>
- <h2>Technique skills</h2><table><thead><tr><th>Skill</th><th>Level</th><th>Best tempo · evidence</th><th>Teacher sign-off</th></tr></thead><tbody>${STRANDS.map(sd=>`<tr><td colspan="4"><strong>${escape(sd.name)}</strong></td></tr>`+SKILLS.filter(s=>s.s===sd.id).map(s=>{const a=skillData(s.id),b=bestTempo('skill:'+s.id);return `<tr><td>${escape(s.title)}</td><td>${escape(LEVELS[a.level]||'')}</td><td>${[b?b+' bpm':'',escape(a.evidence||'')].filter(Boolean).join(' · ')||'—'}</td><td>${a.verified?`${escape(a.initials||'')} · ${escape(fmtDate(a.verifiedAt||''))}`:'—'}</td></tr>`}).join('')).join('')}</tbody></table>
+ <h2>Technique skills</h2><table><thead><tr><th>Skill</th><th>Level</th><th>Best tempo · evidence</th><th>Teacher sign-off</th></tr></thead><tbody>${STRANDS.map(sd=>`<tr><td colspan="4"><strong>${escape(sd.name)}</strong></td></tr>`+SKILLS.filter(s=>s.s===sd.id).map(s=>{const a=skillData(s.id),b=bestTempo('skill:'+s.id);return `<tr><td>${escape(s.title)}</td><td>${escape(LEVELS[a.level]||'')}</td><td>${[b?b+' bpm':'',escape(a.evidence||'')].filter(Boolean).join(' · ')||'—'}</td><td>${a.verified?(a.initials||a.verifiedAt?[a.initials?escape(a.initials):'',a.verifiedAt?escape(fmtDate(a.verifiedAt)):''].filter(Boolean).join(' · '):'Verified'):'—'}</td></tr>`}).join('')).join('')}</tbody></table>
  <h2>8-lesson pathway</h2><table><thead><tr><th>Lesson</th><th>Tasks done</th><th>Completed</th></tr></thead><tbody>${LESSONS.map((l,i)=>{const a=lessonData(i);return `<tr><td>${i+1}. ${escape(l.name)}</td><td>${a.checks.length} of ${l.tasks.length}</td><td>${a.checks.length===l.tasks.length?escape(fmtDate(a.date||'')):'—'}</td></tr>`}).join('')}</tbody></table>
  <h2>Rudiments demonstrated (${rDone.length} of 40)</h2>${rDone.length?`<ul class="report-list">${rDone.map(x=>{const b=bestTempo('rud:'+x.n);return `<li>${x.n}. ${escape(x.name)} · ${escape(fmtDate(x.r.date||''))}${b?` · best ${b} bpm`:''}</li>`}).join('')}</ul>`:'<p class="muted">None ticked yet.</p>'}
  <h2>Tempo log</h2>${tempos.length?`<table><thead><tr><th>Date</th><th>Skill or rudiment</th><th>Tempo</th></tr></thead><tbody>${tempos.map(t=>`<tr><td>${escape(fmtDate(t.date))}</td><td>${escape(itemName(t.item))}</td><td>${t.bpm} bpm</td></tr>`).join('')}</tbody></table>`:'<p class="muted">No tempos logged in this period.</p>'}
@@ -863,7 +875,7 @@ function validTempos(t){if(t===undefined)return true;return Array.isArray(t)&&t.
 /* P2: backup in, from a file or from pasted text. */
 function importDialog(text=''){dialog('Import a backup',`<p>Importing <strong>replaces</strong> the progress in this browser. You will be asked to confirm before anything changes.</p><div class="modal-actions" style="justify-content:flex-start"><button class="btn" data-action="import-file" data-first>Choose a backup file</button></div><div class="field"><label for="importText">Or paste the backup text here</label><textarea id="importText" class="modal-text" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="Paste everything, from the first { to the last }"></textarea></div><div class="modal-actions"><button class="btn" data-dlg="cancel">Cancel</button><button class="btn primary" data-action="import-paste">Import pasted backup</button></div>`);if(text)$('#importText').value=text}
 async function importText(text,pasted){if(text.length>3e6){toast('Import rejected: the backup is over 3 MB.');return}let incoming;try{incoming=JSON.parse(text)}catch(e){toast(pasted?'That text is not a complete backup. Copy all of it, from the first { to the last }.':'Could not read that JSON backup.');return}
- if(!validImport(incoming)){toast('Not a valid Percussion Technique Lab backup.');return}
+ if(!validImport(incoming)){toast('Not a valid Percussion Lab backup.');return}
  if(!await ask('Replace all progress in this browser with the imported backup?','Replace progress','Import backup')){if(pasted)importDialog(text);return}
  const {exportedAt,...rest}=incoming;state=normalise(rest);reportFrom='';reportTo='';const ok=store();checkDraftDate();showTab('today');if(ok)toast(`Imported: ${state.sessions.length} sessions, ${Object.keys(state.skills).length} skills, ${Object.values(state.rudimentChecks).filter(r=>r.done).length} rudiments.`)}
 async function importData(file){if(!file)return;if(file.size>3e6){toast('Import rejected: file is over 3 MB.');return}let text;try{text=await file.text()}catch(e){toast('Could not read that file.');return}await importText(text,false)}

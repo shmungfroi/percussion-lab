@@ -123,3 +123,23 @@ One-file build: `scripts/build_single_file.py` now also embeds the three fonts a
 Tests changed only where they encoded the old look: lime fill selector, the notation ink colour, the page title, and P4's request list (now also allows the three same-origin `fonts/*.ttf`). New Spec V checks cover: no `#b3ef66`, no monospace (source and computed styles), Poiret on brand and headings, fonts loaded, no upper-casing, trace present and recoloured in both themes, contrast on every page in both themes, strand colours, notation legibility, the theme control (switches `color-scheme`, persists under its own key, never in the progress object or backup, 44 px on a phone), print still dark ink on white, and fonts embedded in the one-file build.
 
 Data shape: unchanged. Regression suite: 158/158 (157/157 with `--stub`); notation 16/16.
+
+## 27 Nov 2026: Spec V independent design check (W1 to W11)
+
+Visual and wording fixes only; layout, saved-data shape and storage key unchanged. W6 layout: separate framework, not done.
+
+| # | Severity | Finding | Fix | Status |
+|---|---|---|---|---|
+| W1 | Must | The selected level "Not started" was solid teal, identical to "Applied", so it read as an achievement. | Selected level 0 is an outline (teal border, ink text, no fill); Exploring and above keep the solid fill. Print has its own outline rule. | Fixed |
+| W2 | Should | `.lesson-number` in Poiret One read "01" as "O1". | Outfit, tabular figures, regular weight, display gold (the darker light-theme gold, so it stays 4.5:1). | Fixed |
+| W3 | Should | Unticked native checkboxes were grey-filled in dark mode and looked disabled. | All checkboxes use `appearance:none`: card fill, rule-family border (`--line2`), teal fill with a tick when checked, hover border, the global focus ring, 20 px (the existing size inside the 44 px rows). Both themes and print (colours forced on). | Fixed |
+| W4 | Should | Light-mode page trace too loud. | Light opacity .20 to .15 (desktop) and .15 to .12 (phone). Dark unchanged. | Fixed |
+| W5 | Should | Light-mode h1 (Poiret, `#7a5c12`) read thin. | New token `--gold-display`: `#5f4708` in light, `#f0d48a` in dark (unchanged). Used on h1 and the report title. | Fixed |
+| W6 | n/a | Layout finding. | Separate framework, not done. | Not done |
+| W7 | Nit | Journal summary minutes ("20 min") wrapped at 1366 px. | `white-space:nowrap` on that span. | Fixed |
+| W8 | Should | Trace "3" numerals were cut into fragments in the 13 to 18 px gaps between cards. | Desktop `background-position` 190px 115px to 225px 390px, chosen by scoring numeral/card overlap on Today, Technique, Pathway, Goals, Rudiments and Report at 1366 (51 partial numerals down to about 11). Phones (tile 470 px) keep the old offset. | Fixed |
+| W9 | Nit | Evidence report showed a lone "·" under Teacher sign-off for a skill verified without initials or date. | Shows "Verified" in that case. | Fixed |
+| W10 | Should | On phones Export progress / Evidence report stacked on the right. | Top line is a column on phones; the two buttons share one row at equal width. | Fixed |
+| W11 | Nit | Old name left in the invalid-backup toast and the one-file build name. | Toast reads "Not a valid Percussion Lab backup."; build output is `dist/Percussion_Lab.html` (script, README and test). No other user-visible "Percussion Technique Lab" in the app. | Fixed |
+
+Tests: one check per item (W6 excepted) in `tests/run_tests.py`; `take_shots.py` now also shoots the Pathway page. Regression suite: 179/179 (178/178 with `--stub`); notation 16/16.

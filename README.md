@@ -14,7 +14,7 @@ Built in ChatGPT (Nov 2026), brought into Claude and GitHub on 25 Nov 2026.
 | `index.html` | The app. Open it in a browser. |
 | `fonts/` | Poiret One and Outfit (SIL Open Font Licence), the same files The Guitar Lab uses. Must sit next to `index.html`; without them the app falls back to the system font. |
 | `notation.js` | Draws the 40 PAS International Drum Rudiments as SVG notation (`window.Rudiments`). Must sit next to `index.html`. Without it the app still runs and says the notation is missing. |
-| `scripts/build_single_file.py` | Makes a one-file copy with the notation and the three fonts built in: `python3 scripts/build_single_file.py` → `dist/Percussion_Technique_Lab.html`. |
+| `scripts/build_single_file.py` | Makes a one-file copy with the notation and the three fonts built in: `python3 scripts/build_single_file.py` → `dist/Percussion_Lab.html`. |
 | `CORRECTIONS.md` | Correction register: what was fixed and why. |
 | `tests/run_tests.py` | Regression suite for the app (headless Chrome via Playwright). Run before every push. |
 | `tests/test_notation.py`, `tests/notation_preview.html` | Checks and a preview page for the notation. |
