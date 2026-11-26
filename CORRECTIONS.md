@@ -143,3 +143,5 @@ Visual and wording fixes only; layout, saved-data shape and storage key unchange
 | W11 | Nit | Old name left in the invalid-backup toast and the one-file build name. | Toast reads "Not a valid Percussion Lab backup."; build output is `dist/Percussion_Lab.html` (script, README and test). No other user-visible "Percussion Technique Lab" in the app. | Fixed |
 
 Tests: one check per item (W6 excepted) in `tests/run_tests.py`; `take_shots.py` now also shoots the Pathway page. Regression suite: 179/179 (178/178 with `--stub`); notation 16/16.
+
+| W8b | Design (Claude review) | The W8 offset (225px 390px) put trace numerals behind the header pills and page titles. | Desktop trace returned to the original Shmung placement (190px 115px); light opacity reduction from W4 kept. Test updated. |

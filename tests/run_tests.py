@@ -498,7 +498,7 @@ def main():
             check(f"W5 h1 colour ({scheme})", h1 == ("rgb(95, 71, 8)" if scheme == "light" else "rgb(240, 212, 138)"), h1)
             op = pg.evaluate("getComputedStyle(document.querySelector('.page'),'::before').opacity"); bp = pg.evaluate("getComputedStyle(document.querySelector('.page'),'::before').backgroundPosition")
             check(f"W4 trace opacity ({scheme}, desktop)", op == ("0.15" if scheme == "light" else "0.17"), op)
-            check(f"W8 trace offset clears the first card row ({scheme})", bp == "225px 390px", bp)
+            check(f"W8 trace keeps the original Shmung placement ({scheme})", bp == "190px 115px", bp)
             pg.click("[data-nav=goals]")
             ws = pg.evaluate("getComputedStyle(document.querySelector('.history-item summary .note')).whiteSpace")
             check(f"W7 journal minutes never wrap ({scheme})", ws == "nowrap", ws)

@@ -94,7 +94,7 @@
     .theme-switch button[aria-pressed=true]{color:var(--ink);background:color-mix(in srgb,var(--teal) 20%,transparent);box-shadow:inset 0 0 0 1px var(--teal)}
     .page{min-width:0;padding:30px clamp(18px,3.8vw,55px) 65px;position:relative;isolation:isolate}
     /* V6 (decision D7): the 2·3·3 number-diamond trace stays on the page background. Same geometry as before; family colours, one drawing per theme. */
-    .page::before{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;background-image:var(--trace-dark);background-size:600px 600px;background-repeat:repeat;opacity:var(--trace-op);background-position:225px 390px}
+    .page::before{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;background-image:var(--trace-dark);background-size:600px 600px;background-repeat:repeat;opacity:var(--trace-op);background-position:190px 115px}
     @supports (color:light-dark(#000,#fff)){
       @media (prefers-color-scheme:light){
         :root:not([data-theme=dark]){--trace-op:.15;--trace-op-sm:.12}
